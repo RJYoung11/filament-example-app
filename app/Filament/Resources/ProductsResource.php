@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductsResource\Pages;
 use App\Filament\Resources\ProductsResource\RelationManagers;
+use App\Models\Customers;
 use App\Models\Products;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
@@ -14,6 +15,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\DB;
 
 class ProductsResource extends Resource
 {
@@ -22,6 +24,16 @@ class ProductsResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     protected static ?string $navigationGroup = 'Services';
+
+    public static function getEloquentQuery(): Builder
+    {
+        $customerAvail = DB::table('customers')
+            ->select('purchased_item', DB::raw('SUM(quantity) as total_quantity'))
+            ->groupBy('purchased_item')
+            ->get();
+
+        return static::getModel()::query();
+    }
 
     public static function form(Form $form): Form
     {

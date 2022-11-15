@@ -7,6 +7,7 @@ use App\Filament\Resources\CustomersResource\RelationManagers;
 use App\Models\Customers;
 use App\Models\Products;
 use Filament\Forms;
+use Filament\Pages\Actions\CreateAction;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -23,10 +24,6 @@ class CustomersResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // logger(Products::all());
-        collect(Customers::all())->each(function ($customer) {
-            logger($customer);
-        });
         return parent::getEloquentQuery()->where('firstname', '!=', 'Test');
     }
 
@@ -37,6 +34,11 @@ class CustomersResource extends Resource
                 Forms\Components\TextInput::make('firstname')->required(),
                 Forms\Components\TextInput::make('lastname')->required(),
                 Forms\Components\TextInput::make('email')->required(),
+                Forms\Components\TextInput::make('quantity')
+                    ->numeric()
+                    ->minValue(0)
+                    ->maxValue(100)
+                    ->required(),
                 Forms\Components\Select::make('purchased_item')->required()
                     ->label('Select an Item')
                     ->options(Products::all()->pluck('product_name', 'product_name'))
@@ -51,6 +53,7 @@ class CustomersResource extends Resource
                 Tables\Columns\TextColumn::make('firstname'),
                 Tables\Columns\TextColumn::make('lastname'),
                 Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('quantity'),
                 Tables\Columns\TextColumn::make('purchased_item')
 
             ])
@@ -60,6 +63,13 @@ class CustomersResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->before(function ($record) {
+
+                    $onDeleteCustomer = Products::where('product_name', $record->purchased_item)->first();
+                    $onDeleteCustomer->item_on_hand = (int) $onDeleteCustomer->item_on_hand + $record->quantity;
+                    $onDeleteCustomer->save();
+                    logger($record);
+                }),
             ])
             ->bulkActions([]);
     }
@@ -75,9 +85,9 @@ class CustomersResource extends Resource
     {
         return [
             'index' => Pages\ListCustomers::route('/'),
-            // 'create' => Pages\CreateCustomers::route('/create'),
+            'create' => Pages\CreateCustomers::route('/create'),
             // 'view' => Pages\ViewCustomers::route('/{record}'),
-            // 'edit' => Pages\EditCustomers::route('/{record}/edit'),
+            'edit' => Pages\EditCustomers::route('/{record}/edit'),
         ];
     }
 }
