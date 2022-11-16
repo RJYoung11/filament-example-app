@@ -13,7 +13,7 @@ class ProductsChart extends LineChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Blog posts created',
+                    'label' => 'Products created',
                     'data' => [10, 10, 51, 2, 21, 32, 31, 74, 65, 45, 56, 23],
                 ],
             ],

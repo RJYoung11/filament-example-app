@@ -22,11 +22,6 @@ class CustomersResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'Services';
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('firstname', '!=', 'Test');
-    }
-
     public static function form(Form $form): Form
     {
         return $form
@@ -70,7 +65,9 @@ class CustomersResource extends Resource
                     $onDeleteCustomer->save();
                 }),
             ])
-            ->bulkActions([]);
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

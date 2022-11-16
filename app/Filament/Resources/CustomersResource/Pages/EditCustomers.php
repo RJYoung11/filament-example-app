@@ -22,7 +22,6 @@ class EditCustomers extends EditRecord
         $product = Products::where('product_name', $data['purchased_item'])->first();
 
         $product->item_on_hand = (int) $product->total_item - (int) ($data['quantity']);
-        logger($product);
         $product->save();
         return $data;
     }

@@ -8,6 +8,7 @@ use App\Models\Customers;
 use App\Models\Products;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\TextInput\Mask;
 use Filament\Forms\Components\Wizard;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -25,23 +26,15 @@ class ProductsResource extends Resource
 
     protected static ?string $navigationGroup = 'Services';
 
-    public static function getEloquentQuery(): Builder
-    {
-        $customerAvail = DB::table('customers')
-            ->select('purchased_item', DB::raw('SUM(quantity) as total_quantity'))
-            ->groupBy('purchased_item')
-            ->get();
-
-        return static::getModel()::query();
-    }
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Card::make()->schema([
                     Forms\Components\TextInput::make('product_name')->required(),
-                    Forms\Components\TextInput::make('price')->required(),
+                    Forms\Components\TextInput::make('price')
+                        ->required('eur')
+                        ->mask(fn (Mask $mask) => $mask->money(prefix: '$ ', thousandsSeparator: ',', decimalPlaces: 2)),
                     Forms\Components\TextInput::make('item_on_hand')->required(),
                     Forms\Components\FileUpload::make('file')->required()->preserveFilenames()
                 ])
@@ -53,7 +46,8 @@ class ProductsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('product_name'),
-                Tables\Columns\TextColumn::make('price'),
+                Tables\Columns\TextColumn::make('price')
+                    ->money('usd', true),
                 Tables\Columns\TextColumn::make('item_on_hand'),
                 Tables\Columns\ImageColumn::make('file'),
             ])
@@ -80,9 +74,9 @@ class ProductsResource extends Resource
     {
         return [
             'index' => Pages\ListProducts::route('/'),
-            // 'create' => Pages\CreateProducts::route('/create'),
+            'create' => Pages\CreateProducts::route('/create'),
             // 'view' => Pages\ViewProducts::route('/{record}'),
-            // 'edit' => Pages\EditProducts::route('/{record}/edit'),
+            'edit' => Pages\EditProducts::route('/{record}/edit'),
         ];
     }
 }

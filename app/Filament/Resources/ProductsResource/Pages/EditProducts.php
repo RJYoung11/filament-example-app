@@ -20,4 +20,10 @@ class EditProducts extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['total_item'] = $data['item_on_hand'];
+        return $data;
+    }
 }
