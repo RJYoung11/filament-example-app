@@ -17,11 +17,11 @@ class CreateCustomers extends CreateRecord
         return $this->getResource()::getUrl('index');
     }
 
-    // protected function mutateFormDataBeforeCreate(array $data): array
-    // {
-    //     $product = Products::where('product_name', $data['purchased_item'])->first();
-    //     $product->item_on_hand = (int) $product->item_on_hand - (int) $data['quantity'];
-    //     $product->save();
-    //     return $data;
-    // }
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $product = Products::where('product_name', $data['purchased_item'])->first();
+        $product->item_on_hand = (int) $product->item_on_hand - (int) $data['quantity'];
+        $product->save();
+        return $data;
+    }
 }

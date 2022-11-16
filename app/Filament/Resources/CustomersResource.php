@@ -68,7 +68,6 @@ class CustomersResource extends Resource
                     $onDeleteCustomer = Products::where('product_name', $record->purchased_item)->first();
                     $onDeleteCustomer->item_on_hand = (int) $onDeleteCustomer->item_on_hand + $record->quantity;
                     $onDeleteCustomer->save();
-                    logger($record);
                 }),
             ])
             ->bulkActions([]);
