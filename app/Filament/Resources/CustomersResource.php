@@ -19,7 +19,7 @@ class CustomersResource extends Resource
 {
     protected static ?string $model = Customers::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
     protected static ?string $navigationGroup = 'Services';
 
     public static function form(Form $form): Form
@@ -34,9 +34,9 @@ class CustomersResource extends Resource
                     ->minValue(0)
                     ->maxValue(100)
                     ->required(),
-                Forms\Components\Select::make('purchased_item')->required()
+                Forms\Components\Select::make('product_id')->required()
                     ->label('Select an Item')
-                    ->options(Products::all()->pluck('product_name', 'product_name'))
+                    ->options(Products::all()->pluck('product_name', 'id'))
                     ->searchable()
             ]);
     }

@@ -20,7 +20,7 @@ class DeliveryStatusResource extends Resource
 {
     protected static ?string $model = DeliveryStatus::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-information-circle';
     protected static ?string $navigationGroup = 'Services';
 
 

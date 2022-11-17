@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/button-clicked', function () {
-    return true;
-});
+Route::get('customers/status/{id}', [CustomersController::class, 'checkStatus']);
+Route::post('customers', [CustomersController::class, 'store']);
+
+Route::get('products', [ProductsController::class, 'index']);
