@@ -23,5 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('customers/status/{id}', [CustomersController::class, 'checkStatus']);
 Route::post('customers', [CustomersController::class, 'store']);
+Route::put('customers/status/{id}', [CustomersController::class, 'update']);
+
 
 Route::get('products', [ProductsController::class, 'index']);

@@ -21,7 +21,7 @@ class DeliveryStatusResource extends Resource
     protected static ?string $model = DeliveryStatus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-information-circle';
-    protected static ?string $navigationGroup = 'Services';
+    protected static ?string $navigationGroup = 'Delivery';
 
 
     public static function form(Form $form): Form

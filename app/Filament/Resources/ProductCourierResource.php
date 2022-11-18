@@ -17,15 +17,19 @@ class ProductCourierResource extends Resource
 {
     protected static ?string $model = ProductCourier::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-truck';
+
+    protected static ?string $navigationLabel = 'Delivery Couriers';
+
+    protected static ?string $navigationGroup = 'Delivery';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('courier_name')->required(),
-                Forms\Components\TextInput::make('rating'),
-                Forms\Components\TextInput::make('to_deliver_products'),
+                Forms\Components\TextInput::make('rating')->disabled(),
+                Forms\Components\TextInput::make('to_deliver_products')->disabled(),
             ]);
     }
 

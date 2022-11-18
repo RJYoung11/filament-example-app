@@ -24,22 +24,25 @@
     <div id="isAccepted">
         <p>Product was added successfully, enter name below to say status</p>
         <button onclick="checkIfItemIsOnWay()">Show delivery status</button>
+        <button onclick="itemArrived()">Click this button if you're has already arrived!</button>
     </div>
 
 </body>
 
 <script>
     var obj = {}
-    var values = ['Curry Shoes', 'Puma', 'Nike']
+    var values = []
     var selectBox = document.getElementById('product_id');
     var customerId = '';
 
     const clickButton = () => {
         var divElem = document.getElementById("myDiv");
         var inputElements = divElem.querySelectorAll("input, select, checkbox, textarea");
-        inputElements.forEach(element => {
+        inputElements.forEach((element, index) => {
             obj[element.id] = element.value
         });
+
+        console.log(obj);
         obj['purchased_item'] = values[obj['product_id']]
 
         axios.post('/api/customers', obj).then(response => {
@@ -57,7 +60,9 @@
 
             for (var i = 0, l = response.data.length; i < l; i++) {
                 var option = response.data[i];
-                selectBox.options.add(new Option(option.product_name, option.id));
+                selectBox.options.add(new Option(option.product_name, i));
+
+                values.push(option.product_name)
             }
         })
     }
@@ -65,9 +70,15 @@
     function checkIfItemIsOnWay() {
         console.log(customerId);
         axios.get('api/customers/status/' + customerId).then(status => {
-            // console.log(status)
-            !status.data ? alert('Your request is on the process!') : alert('Request is' + status.data
-                .status)
+            !status.data ? alert('Your request is on the process!') : alert('Request is' + status.data.status)
+        })
+    }
+
+    function itemArrived() {
+        var divElem = document.getElementById("myDiv");
+        var inputElements = divElem.querySelectorAll("input, select, checkbox, textarea");
+        axios.put('/api/customers/status/' + customerId, obj).then((response) => {
+            alert('You have successfully received your ordered item!');
         })
     }
 
