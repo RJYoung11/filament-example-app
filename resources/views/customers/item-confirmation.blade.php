@@ -12,7 +12,7 @@
 
 <body>
     <div id="isAccepted">
-        <p>Product was added successfully, enter name below to say status</p>
+        <p>Product was added successfully, Click buttons for response</p>
         <button onclick="checkIfItemIsOnWay()">Show delivery status</button>
         <button onclick="itemArrived()">Click this button if you're has already arrived!</button>
     </div>
@@ -30,15 +30,17 @@
     }
 
     function itemArrived() {
-        axios.put('/api/customers/status/' + urlParams).then((response) => {
-            alert('You have successfully received your ordered item!');
-        })
+
+        let rate = prompt("Please rate your rider from 1-10");
+        console.log(rate)
+        // axios.put('/api/customers/status/' + urlParams).then((response) => {
+        //     alert('You have successfully received your ordered item!');
+        // })
     }
 </script>
 
 <style>
     #isAccepted {
-        width: 50%;
         margin-left: auto;
         margin-right: auto;
     }

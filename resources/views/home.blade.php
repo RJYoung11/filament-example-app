@@ -52,7 +52,7 @@
 
             for (var i = 0, l = response.data.length; i < l; i++) {
                 var option = response.data[i];
-                selectBox.options.add(new Option(option.product_name, i));
+                selectBox.options.add(new Option(option.product_name, option.id));
 
                 values.push(option.product_name)
             }

@@ -44,12 +44,9 @@ class CustomersController extends Controller
     {
         //
     }
-    public function update($id, Customers $customers)
+    public function update($id, $rate, Customers $customers)
     {
-        $customerUpdate = DeliveryStatus::where('customer_id', $id)->first();
-
-        $customerUpdate->status = 'Received';
-        $customerUpdate->save();
+        $customerUpdate = DeliveryStatus::where('customer_id', $id)->delete();
 
         return $customerUpdate;
     }

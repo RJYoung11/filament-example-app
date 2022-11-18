@@ -33,11 +33,6 @@ Route::get('/confirmation', function () {
     return view('customers\item-confirmation');
 });
 
-Route::get('/product-on-way', function () {
-    return view('couriers\on-the-way');
-});
-
-
 Route::get('/all-couriers', function () {
     $allCouriers = ProductCourier::all();
     return view('couriers\courier', ['courier' => $allCouriers]);

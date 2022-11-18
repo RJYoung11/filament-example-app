@@ -26,18 +26,20 @@
 </html>
 <script>
     var selectedUser = ''
+    var selectedUserText = ''
     var e = document.getElementById("user");
 
     function onChange() {
         var value = e.value;
         var text = e.options[e.selectedIndex].text;
         selectedUser = value;
+        selectedUserText = text;
     }
     e.onchange = onChange;
 
 
     function submitSelectedUser() {
-        axios.get('update-status/' + selectedUser).then((response) => {
+        axios.get('update-status/' + selectedUser + '/' + selectedUserText).then((response) => {
             alert('Courier is on the way to deliver!');
         })
     }
@@ -53,7 +55,7 @@
     }
 
     .confirmation {
-        width: 50%;
+        width: 100%;
         margin-left: auto;
         margin-right: auto;
     }
