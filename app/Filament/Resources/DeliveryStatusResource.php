@@ -29,7 +29,7 @@ class DeliveryStatusResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('customer_id')
-                    ->label(`Buyer's Name`)
+                    ->searchable()
                     ->options(
                         Customers::select(
                             DB::raw("CONCAT(firstname,' ',lastname) AS full_name"),
@@ -40,6 +40,7 @@ class DeliveryStatusResource extends Resource
                     ->reactive()
                     ->required(),
                 Forms\Components\Select::make('product_id')
+                    ->searchable()
                     ->label('Product Name')
                     ->options(function (callable $get) {
                         $products_availed = Customers::where('id', $get('customer_id'))->pluck('purchased_item', 'purchased_item');
@@ -48,6 +49,7 @@ class DeliveryStatusResource extends Resource
                     })
                     ->required(),
                 Forms\Components\Select::make('courier_name')
+                    ->searchable()
                     ->options(ProductCourier::all()->pluck('courier_name', 'courier_name'))
                     ->required(),
             ]);

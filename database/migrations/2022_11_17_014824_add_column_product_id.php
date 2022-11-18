@@ -14,9 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->integer('product_id')->unsigned()->after('email');
+            // $table->integer('product_id')->unsigned()->after('email');
 
-            $table->foreign('product_id')->references('id')->on('products');
+            // $table->foreign('product_id')->references('id')->on('products');
+
+            $table->bigInteger('product_id')->nullable()->unsigned();
+            $table->index('product_id')->nullable();
+            $table->foreign('product_id')->nullable()->references('id')->on('products')->onDelete('cascade');
         });
     }
 

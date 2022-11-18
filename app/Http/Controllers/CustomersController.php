@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customers;
 use App\Models\DeliveryStatus;
+use App\Models\Products;
 use Illuminate\Http\Request;
 
 class CustomersController extends Controller
@@ -19,10 +20,14 @@ class CustomersController extends Controller
 
     public function store(Request $request)
     {
+        $updateProduct = Products::where('id', $request->product_id)->first();
+        $updateProduct->item_on_hand = (int) $updateProduct->item_on_hand - (int) $request->quantity;
+        $updateProduct->save();
 
-        logger($request);
+
         $customer = $request->all();
         $newCustomer = Customers::create($customer);
+
         return $newCustomer;
     }
 
@@ -39,7 +44,7 @@ class CustomersController extends Controller
     {
         //
     }
-    public function update(Request $request, $id, Customers $customers)
+    public function update($id, Customers $customers)
     {
         $customerUpdate = DeliveryStatus::where('customer_id', $id)->first();
 
