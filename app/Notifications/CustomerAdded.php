@@ -29,7 +29,8 @@ class CustomerAdded extends Notification
         if (!empty($customers))
             Notification::make()
                 ->title('Customer ' . $customers->firstname . ' ' . $customers->lastname . ' added successfully!')
-                ->sendToDatabase($getUserAdmin);
+                ->sendToDatabase($getUserAdmin)
+                ->toBroadcast();
     }
 
     /**
