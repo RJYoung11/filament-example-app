@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Customers;
 use App\Models\DeliveryStatus;
 use App\Models\Products;
+use App\Notifications\CustomerAdded;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomersController extends Controller
 {
@@ -26,8 +28,10 @@ class CustomersController extends Controller
 
 
         $customer = $request->all();
+        $customer['purchased_item'] = $updateProduct->product_name;
         $newCustomer = Customers::create($customer);
 
+        (new CustomerAdded($newCustomer));
         return $newCustomer;
     }
 

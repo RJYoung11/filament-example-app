@@ -32,10 +32,9 @@
     function itemArrived() {
 
         let rate = prompt("Please rate your rider from 1-10");
-        console.log(rate)
-        // axios.put('/api/customers/status/' + urlParams).then((response) => {
-        //     alert('You have successfully received your ordered item!');
-        // })
+        axios.get('/api/couriers/add-rate/' + urlParams + '/' + rate + '/').then((response) => {
+            alert('You have successfully received your ordered item!');
+        })
     }
 </script>
 

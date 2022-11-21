@@ -48,9 +48,10 @@ class DeliveryStatusResource extends Resource
                         return $products_availed;
                     })
                     ->required(),
-                Forms\Components\Select::make('courier_name')
+                Forms\Components\Select::make('courier_id')
+                    ->label('Courier Name')
                     ->searchable()
-                    ->options(ProductCourier::all()->pluck('courier_name', 'courier_name'))
+                    ->options(ProductCourier::all()->pluck('courier_name', 'id'))
                     ->required(),
             ]);
     }

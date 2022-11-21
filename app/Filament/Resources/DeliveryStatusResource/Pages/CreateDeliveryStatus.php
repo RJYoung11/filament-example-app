@@ -4,6 +4,7 @@ namespace App\Filament\Resources\DeliveryStatusResource\Pages;
 
 use App\Filament\Resources\DeliveryStatusResource;
 use App\Models\Customers;
+use App\Models\DeliveryStatus;
 use App\Models\ProductCourier;
 use App\Models\Products;
 use Filament\Pages\Actions;
@@ -22,6 +23,7 @@ class CreateDeliveryStatus extends CreateRecord
         $data['product_id'] = $product->id;
         $data['product_name'] = $product->product_name;
         $data['status'] = "Pending";
+        $data['courier_name'] = ProductCourier::where('id', $data['courier_id'])->first()->courier_name;
 
         $this->updateDeliverCouriers($data);
 
@@ -33,10 +35,9 @@ class CreateDeliveryStatus extends CreateRecord
 
     public function updateDeliverCouriers($data)
     {
-        $courier = ProductCourier::where('courier_name', $data['courier_name'])->first();
-
-        logger(print_r($courier->to_deliver_products, true));
+        $courier = ProductCourier::where('id', $data['courier_id'])->first();
         $courier->to_deliver_products = json_encode([$data['buyer_name'] => $data['product_name']]);
+        $courier->customer_id = $data['customer_id'];
         $courier->save();
     }
 }

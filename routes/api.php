@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\ProductCourierController;
 use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('customers/status/{id}/{rate}', [CustomersController::class, 'checkStatus']);
+Route::get('customers/status/{id}/', [CustomersController::class, 'checkStatus']);
 Route::post('customers', [CustomersController::class, 'store']);
 Route::put('customers/status/{id}', [CustomersController::class, 'update']);
+
+Route::get('couriers/add-rate/{customer}/{rating}', [ProductCourierController::class, 'update']);
 
 
 Route::get('products', [ProductsController::class, 'index']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DeliveryStatus;
 use App\Models\ProductCourier;
 use Illuminate\Http\Request;
 
@@ -67,9 +68,16 @@ class ProductCourierController extends Controller
      * @param  \App\Models\ProductCourier  $productCourier
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProductCourier $productCourier)
+    public function update($customer, $rating, ProductCourier $productCourier)
     {
-        //
+        $courier = ProductCourier::where('customer_id', $customer)->first();
+        DeliveryStatus::where('customer_id', $customer)->delete();
+
+        $courier->rating = $rating;
+        $courier->save();
+
+
+        return $courier;
     }
 
     /**

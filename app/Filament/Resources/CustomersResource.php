@@ -6,7 +6,11 @@ use App\Filament\Resources\CustomersResource\Pages;
 use App\Filament\Resources\CustomersResource\RelationManagers;
 use App\Models\Customers;
 use App\Models\Products;
+use App\Notifications\CustomerAdded;
 use Filament\Forms;
+use Filament\Forms\Components\Builder;
+use Filament\Notifications\Events\DatabaseNotificationsSent;
+use Filament\Notifications\Notification;
 use Filament\Pages\Actions\CreateAction;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -18,6 +22,11 @@ class CustomersResource extends Resource
     protected static ?string $model = Customers::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function form(Form $form): Form
     {
@@ -40,6 +49,13 @@ class CustomersResource extends Resource
 
     public static function table(Table $table): Table
     {
+        new CustomerAdded("");
+        // Notification::make()
+        //     ->title('Saved successfully')
+        //     ->sendToDatabase(auth()->user());
+
+        // logger(new Customers);
+        // event(new DatabaseNotificationsSent(new Customers));
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('firstname'),
