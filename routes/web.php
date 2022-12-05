@@ -40,13 +40,15 @@ Route::get('/all-couriers', function () {
 
 Route::get('update-status/{id}/{name}', function ($id, $name) {
     $deliverStatus = DeliveryStatus::where('courier_name', $name)->first();
-    $deliverStatus->status = "On The Way";
+    if ($deliverStatus) {
+        $deliverStatus->status = "On The Way";
+        $deliverStatus->save();
+    }
 
     $deliverCouriers = ProductCourier::where('courier_name', $id)->first();
     $deliverCouriers->to_deliver_products = null;
 
     $deliverCouriers->save();
-    $deliverStatus->save();
 
     return $deliverStatus;
 });

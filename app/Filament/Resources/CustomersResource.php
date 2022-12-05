@@ -50,19 +50,13 @@ class CustomersResource extends Resource
     public static function table(Table $table): Table
     {
         new CustomerAdded("");
-        // Notification::make()
-        //     ->title('Saved successfully')
-        //     ->sendToDatabase(auth()->user());
-
-        // logger(new Customers);
-        // event(new DatabaseNotificationsSent(new Customers));
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('firstname'),
-                Tables\Columns\TextColumn::make('lastname'),
-                Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('quantity'),
-                Tables\Columns\TextColumn::make('purchased_item')
+                Tables\Columns\TextColumn::make('firstname')->searchable(),
+                Tables\Columns\TextColumn::make('lastname')->searchable(),
+                Tables\Columns\TextColumn::make('email')->searchable(),
+                Tables\Columns\TextColumn::make('quantity')->searchable(),
+                Tables\Columns\TextColumn::make('purchased_item')->searchable()
 
             ])
             ->filters([

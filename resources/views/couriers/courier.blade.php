@@ -40,7 +40,8 @@
 
     function submitSelectedUser() {
         axios.get('update-status/' + selectedUser + '/' + selectedUserText).then((response) => {
-            alert('Courier is on the way to deliver!');
+            response.data ? alert('Courier is on the way to deliver!') : alert(
+                "User doesn't have item to be deliver!")
         })
     }
 </script>

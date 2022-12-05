@@ -43,9 +43,9 @@ class ProductsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('product_name'),
+                Tables\Columns\TextColumn::make('product_name')->searchable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->money('usd', true),
+                    ->money('usd', true)->searchable(),
                 Tables\Columns\TextColumn::make('item_on_hand'),
                 Tables\Columns\ImageColumn::make('file'),
             ])
