@@ -35,7 +35,7 @@ class ProductsResource extends Resource
                         ->mask(fn (Mask $mask) => $mask->money(prefix: '$ ', thousandsSeparator: ',', decimalPlaces: 2)),
                     Forms\Components\TextInput::make('item_on_hand')->required(),
                     Forms\Components\FileUpload::make('file')->required()->preserveFilenames()
-                ])
+                ])->columns(2)
             ]);
     }
 
@@ -43,18 +43,19 @@ class ProductsResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('product_name')->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->money('usd', true)->searchable(),
                 Tables\Columns\TextColumn::make('item_on_hand'),
-                Tables\Columns\ImageColumn::make('file'),
+                Tables\Columns\ImageColumn::make('file')->height(100),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Web\ProductsController;
 use App\Models\DeliveryStatus;
 use App\Models\ProductCourier;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------

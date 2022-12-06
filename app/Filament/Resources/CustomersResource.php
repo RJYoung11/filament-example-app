@@ -49,9 +49,9 @@ class CustomersResource extends Resource
 
     public static function table(Table $table): Table
     {
-        new CustomerAdded("");
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('firstname')->searchable(),
                 Tables\Columns\TextColumn::make('lastname')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
@@ -63,10 +63,8 @@ class CustomersResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()->before(function ($record) {
-
                     $onDeleteCustomer = Products::where('product_name', $record->purchased_item)->first();
                     $onDeleteCustomer->item_on_hand = (int) $onDeleteCustomer->item_on_hand + $record->quantity;
                     $onDeleteCustomer->save();
