@@ -24,7 +24,7 @@
 
 
     <div id="id01" class="w3-modal">
-        <div class="w3-modal-content w3-animate-top w3-card-4">
+        <div class="w3-modal-content w3-animate-top w3-card-4 body">
             <header class="w3-container">
                 <span onclick="unselect()" class="w3-button w3-display-topright">&times;</span>
                 <h2 id="name"></h2>
@@ -50,6 +50,8 @@
         document.getElementById('name').innerHTML = product.product_name
         document.getElementById('amount').innerHTML = 'Amount: ' + product.price
         document.getElementById('id01').style.display = 'block'
+
+        selectedId = product.id
     }
 
     const unselect = () => {
@@ -61,7 +63,7 @@
 </html>
 <style>
     input {
-        width: 90%;
+        width: 100%;
         padding: 5px;
         outline: none;
 
@@ -104,5 +106,9 @@
 
     .display {
         margin: 10%;
+    }
+
+    .body {
+        padding: 20px;
     }
 </style>
