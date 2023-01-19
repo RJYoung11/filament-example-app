@@ -1,99 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Select Product</title>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
 <body>
-    <div id="myDiv">
-        <input placeholder="First Name" type="text" id="firstname">
-        <input placeholder="Last Name" type="text" id="lastname">
-        <input placeholder="Email" type="text" id="email">
-        <input placeholder="Quantity" type="number" id="quantity">
-        <select id="product_id">
-            <option selected>Select A Product</option>
-        </select>
-        <button onclick="clickButton()">Click Button Accept</button>
+    <div class="display">
+        <div class="row">
+            @foreach ($products as $product)
+                <div class="column">
+                    <div class="card" onclick="clickButton({{ $product }})" id="{{ $product->id }}">
+                        <img style="height: 20%;" src="{{ asset('storage/' . $product->file) }}">
+                        <p>Name: {{ $product->product_name }}</p>
+                        <p>Price: {{ $product->price }}</p>
+                        <p>Item's on Hand: {{ $product->item_on_hand }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
     </div>
 
+
+    <div id="id01" class="w3-modal">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container">
+                <span onclick="unselect()" class="w3-button w3-display-topright">&times;</span>
+                <h2 id="name"></h2>
+            </header>
+            <div class="w3-container">
+                <input placeholder="How many of this item?" type="number">
+            </div>
+
+            <footer class="w3-container">
+                <p id="amount"></p>
+              </footer>
+        </div>
+    </div>
 </body>
 
 <script>
     var obj = {}
-    var values = []
+    var selectedId = ''
     var selectBox = document.getElementById('product_id');
-    var customerId = '';
 
-    const clickButton = () => {
-        var divElem = document.getElementById("myDiv");
-        var inputElements = divElem.querySelectorAll("input, select, checkbox, textarea");
-        inputElements.forEach((element, index) => {
-            obj[element.id] = element.value
-        });
-        obj['purchased_item'] = values[obj['product_id']]
-
-        axios.post('/api/customers', obj).then(response => {
-            console.log(response);
-            customerId = response.data.id;
-
-            document.getElementById('myDiv').style.display = 'none'
-            location.href = 'confirmation?customer_id=' + customerId
-
-        })
+    const clickButton = (product) => {
+        document.getElementById(product.id).style.backgroundColor = '#C9E3CC'
+        document.getElementById('name').innerHTML = product.product_name
+        document.getElementById('amount').innerHTML = 'Amount: ' + product.price
+        document.getElementById('id01').style.display = 'block'
     }
 
-    function getAllProducts() {
-        axios.get('/api/products').then(response => {
-
-            for (var i = 0, l = response.data.length; i < l; i++) {
-                var option = response.data[i];
-                selectBox.options.add(new Option(option.product_name, option.id));
-
-                values.push(option.product_name)
-            }
-        })
+    const unselect = () => {
+        document.getElementById(selectedId).style.backgroundColor = ''
+        document.getElementById('id01').style.display = 'none'        
     }
-
-    getAllProducts();
 </script>
 
 </html>
 <style>
-    input,
-    select {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        outline: none
+    input {
+        width: 90%;
+        padding: 5px;
+        outline: none;
+
+    }
+    .column {
+        float: left;
+        width: 31%;
+        padding: 0 10px;
     }
 
-    button {
-        width: 100%;
-        background-color: #4CAF50;
-        color: white;
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        border-radius: 4px;
+    .row {
+        margin: 0 -5px;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    @media screen and (max-width: 600px) {
+        .column {
+            width: 100%;
+            display: block;
+            margin-bottom: 20px;
+        }
+    }
+
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        padding: 16px;
+        text-align: center;
+        background-color: #f1f1f1;
         cursor: pointer;
     }
 
-    button:hover {
-        background-color: #45a049;
+    .card:hover {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
     }
 
-    #myDiv {
-        border-radius: 5px;
-        background-color: #f2f2f2;
-        padding: 20px;
+    .display {
+        margin: 10%;
     }
 </style>
