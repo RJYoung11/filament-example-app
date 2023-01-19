@@ -47,8 +47,7 @@ class ProductsResource extends Resource
                 Tables\Columns\TextColumn::make('product_name')->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->money('usd', true)->searchable(),
-                Tables\Columns\TextColumn::make('item_on_hand'),
-                Tables\Columns\ImageColumn::make('file')->height(100),
+            Tables\Columns\TextColumn::make('item_on_hand')
             ])
             ->filters([
                 //

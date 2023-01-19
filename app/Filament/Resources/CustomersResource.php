@@ -16,12 +16,23 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Model;
 
 class CustomersResource extends Resource
 {
     protected static ?string $model = Customers::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
+
+    protected static function getNavigationBadge(): ?string
+    {
+        return Customers::all()->count();
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
 
     public static function canCreate(): bool
     {
@@ -51,7 +62,6 @@ class CustomersResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('firstname')->searchable(),
                 Tables\Columns\TextColumn::make('lastname')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
@@ -59,6 +69,7 @@ class CustomersResource extends Resource
                 Tables\Columns\TextColumn::make('purchased_item')->searchable()
 
             ])
+            ->poll('5s')
             ->filters([
                 //
             ])

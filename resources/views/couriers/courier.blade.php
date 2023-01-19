@@ -15,7 +15,7 @@
         <select id="user">
             <option disabled selected>Select your user</option>
             @foreach ($courier as $key => $arr)
-                <option value="{{ $arr->courier_name }}"> {{ $arr->courier_name }}
+                <option value="{{ $arr->id }}"> {{ $arr->courier_name }}
                 </option>
             @endforeach
         </select><br><br>
@@ -39,7 +39,7 @@
 
 
     function submitSelectedUser() {
-        axios.get('update-status/' + selectedUser + '/' + selectedUserText).then((response) => {
+        axios.get('update-status/' + selectedUser).then((response) => {
             response.data ? alert('Courier is on the way to deliver!') : alert(
                 "User doesn't have item to be deliver!")
         })

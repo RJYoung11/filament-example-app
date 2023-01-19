@@ -25,7 +25,7 @@ class CustomerAdded extends Notification
      */
     public function __construct($customers)
     {
-        $getUserAdmin = User::where('email', 'admin@admin.com')->first();
+        $getUserAdmin = User::where('isAdmin', 1)->first();
         if (!empty($customers))
             Notification::make()
                 ->title('Customer ' . $customers->firstname . ' ' . $customers->lastname . ' added successfully!')

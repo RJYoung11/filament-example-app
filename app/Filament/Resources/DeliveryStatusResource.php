@@ -43,7 +43,7 @@ class DeliveryStatusResource extends Resource
                     ->searchable()
                     ->label('Product Name')
                     ->options(function (callable $get) {
-                        $products_availed = Customers::where('id', $get('customer_id'))->pluck('purchased_item', 'purchased_item');
+                $products_availed = Customers::where('id', $get('customer_id'))->pluck('purchased_item', 'product_id');
 
                         return $products_availed;
                     })
@@ -60,9 +60,9 @@ class DeliveryStatusResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('product_name'),
-                Tables\Columns\TextColumn::make('buyer_name'),
-                Tables\Columns\TextColumn::make('courier_name'),
+                Tables\Columns\TextColumn::make('product.product_name'),
+                Tables\Columns\TextColumn::make('customer.firstname'),
+                Tables\Columns\TextColumn::make('courier.courier_name'),
                 Tables\Columns\TextColumn::make('status'),
             ])
             ->filters([

@@ -40,17 +40,12 @@ Route::get('/all-couriers', function () {
     return view('couriers\courier', ['courier' => $allCouriers]);
 });
 
-Route::get('update-status/{id}/{name}', function ($id, $name) {
-    $deliverStatus = DeliveryStatus::where('courier_name', $name)->first();
-    if ($deliverStatus) {
-        $deliverStatus->status = "On The Way";
-        $deliverStatus->save();
-    }
+Route::get('update-status/{id}', function ($id) {
 
-    $deliverCouriers = ProductCourier::where('courier_name', $id)->first();
-    $deliverCouriers->to_deliver_products = null;
-
-    $deliverCouriers->save();
-
-    return $deliverStatus;
+    logger($id);
+    // $deliverStatus = DeliveryStatus::where('courier_id', $id)->first();
+    // if ($deliverStatus) {
+    //     $deliverStatus->status = "On The Way";
+    //     $deliverStatus->save();
+    // }
 });

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductCourierResource\Pages;
 use App\Filament\Resources\ProductCourierResource\RelationManagers;
+use App\Filament\Resources\ToDeliverProductsResource\RelationManagers\ToDeliverProductsRelationManager;
 use App\Models\ProductCourier;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -23,13 +24,17 @@ class ProductCourierResource extends Resource
 
     protected static ?string $navigationGroup = 'Delivery';
 
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->withCount('to_deliver_product');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('courier_name')->required(),
-                Forms\Components\TextInput::make('rating')->disabled(),
-                Forms\Components\TextInput::make('to_deliver_products')->disabled(),
+            Forms\Components\TextInput::make('rating')->disabled(),
             ]);
     }
 
@@ -38,8 +43,8 @@ class ProductCourierResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('courier_name'),
-                Tables\Columns\TextColumn::make('rating'),
-                Tables\Columns\TextColumn::make('to_deliver_products'),
+            Tables\Columns\TextColumn::make('rating'),
+            Tables\Columns\TextColumn::make('to_deliver_product_count')->label("Item's to deliver"),
             ])
             ->filters([
                 //
@@ -55,7 +60,7 @@ class ProductCourierResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ToDeliverProductsRelationManager::class
         ];
     }
 
