@@ -10,11 +10,6 @@ class Dashboard extends BasePage
 {
     protected static ?string $navigationIcon = 'heroicon-o-home';
 
-    public function render(): View
-    {
-        $sampleData = Http::get('https://datausa.io/api/data?drilldowns=Nation&measures=Population');
-        logger($sampleData['data']);
-        return view('filament.pages.dashboard', ['data' => $sampleData['data']])
-            ->layout(static::$layout, $this->getLayoutData());
-    }
+    protected static string $view = 'filament::pages.dashboard';
+
 }

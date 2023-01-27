@@ -26,9 +26,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', config('filament.path'));
 
 
 Route::get('accept-product', function () {

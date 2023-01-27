@@ -3,21 +3,61 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\LineChartWidget;
+use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
-class BlogPostsChart extends LineChartWidget
+class BlogPostsChart extends ApexChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    /**
+     * Chart Id
+     *
+     * @var string
+     */
+    protected static string $chartId = 'blogPostsChart';
 
-    protected function getData(): array
+    /**
+     * Widget Title
+     *
+     * @var string|null
+     */
+    protected static ?string $heading = 'BlogPostsChart';
+
+    /**
+     * Chart options (series, labels, types, size, animations...)
+     * https://apexcharts.com/docs/options
+     *
+     * @return array
+     */
+    protected function getOptions(): array
     {
         return [
-            'datasets' => [
+            'chart' => [
+                'type' => 'line',
+                'height' => 300,
+            ],
+            'series' => [
                 [
-                    'label' => 'Blog posts created',
-                    'data' => [50, 10, 5, 82, 71, 32, 45, 74, 65, 45, 77, 89],
+                    'name' => 'BlogPostsChart',
+                    'data' => [7, 4, 6, 10, 14, 7, 5, 9, 10, 15, 13, 18],
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'xaxis' => [
+                'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                'labels' => [
+                    'style' => [
+                        'colors' => '#9ca3af',
+                        'fontWeight' => 600,
+                    ],
+                ],
+            ],
+            'yaxis' => [
+                'labels' => [
+                    'style' => [
+                        'colors' => '#9ca3af',
+                        'fontWeight' => 600,
+                    ],
+                ],
+            ],
+            'colors' => ['#6366f1'],
         ];
     }
 }

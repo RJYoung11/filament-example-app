@@ -105,7 +105,7 @@ return [
         'namespace' => 'App\\Filament\\Pages',
         'path' => app_path('Filament/Pages'),
         'register' => [
-            // Pages\Dashboard::class,
+            // \RyanChandler\FilamentProfile\Pages\Profile::class
         ],
     ],
 

@@ -3,21 +3,61 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\LineChartWidget;
+use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
-class ProductsChart extends LineChartWidget
+class ProductsChart extends ApexChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    /**
+     * Chart Id
+     *
+     * @var string
+     */
+    protected static string $chartId = 'productsChart';
 
-    protected function getData(): array
+    /**
+     * Widget Title
+     *
+     * @var string|null
+     */
+    protected static ?string $heading = 'ProductsChart';
+
+    /**
+     * Chart options (series, labels, types, size, animations...)
+     * https://apexcharts.com/docs/options
+     *
+     * @return array
+     */
+    protected function getOptions(): array
     {
         return [
-            'datasets' => [
+            'chart' => [
+                'type' => 'bar',
+                'height' => 300,
+            ],
+            'series' => [
                 [
-                    'label' => 'Products created',
-                    'data' => [10, 10, 51, 2, 21, 32, 31, 74, 65, 45, 56, 23],
+                    'name' => 'ProductsChart',
+                    'data' => [7, 4, 6, 10, 14, 7, 5, 9, 10, 15, 13, 18],
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'xaxis' => [
+                'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                'labels' => [
+                    'style' => [
+                        'colors' => '#9ca3af',
+                        'fontWeight' => 600,
+                    ],
+                ],
+            ],
+            'yaxis' => [
+                'labels' => [
+                    'style' => [
+                        'colors' => '#9ca3af',
+                        'fontWeight' => 600,
+                    ],
+                ],
+            ],
+            'colors' => ['#6366f1'],
         ];
     }
 }
