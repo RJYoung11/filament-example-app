@@ -14,6 +14,6 @@ class ProductCourier extends Model
 
     public function to_deliver_product(): HasMany
     {
-        return $this->hasMany(Customers::class, 'product_id');
+        return $this->hasMany(DeliveryStatus::class, 'product_id');
     }
 }
