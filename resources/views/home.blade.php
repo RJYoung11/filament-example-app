@@ -14,6 +14,7 @@
 
             @if (Auth::guard('ordinary')->user()->type === 'courier')
                 <a href="customers" style="margin-right: 20px">Customers</a>
+                <a href="to-deliver-products" style="margin-right: 20px">To Deliver Products</a>
             @else
                 <a href="status" style="margin-right: 20px">Order Status</a>
             @endif
@@ -54,7 +55,7 @@
 
                 <div style="float: right;">
                     @if (Auth::guard('ordinary')->user()->type === 'customer')
-                        <button onclick="placeOrder()">Place Order</button>
+                        <button onclick="placeOrder(JSON.parse('{{ Auth::guard('ordinary')->user() }}'))">Place Order</button>
                     @endif
                 </div>
             </footer>
@@ -81,7 +82,7 @@
         document.getElementById('id01').style.display = 'none'
     }
 
-    const placeOrder = () => {
+    const placeOrder = (courier) => {
         let users = {!! json_encode($user->toArray()) !!};
         let quantity = document.getElementById('quantity').value;
 
@@ -91,10 +92,11 @@
             'email': users.email,
             'purchased_item': selectedId.product_name,
             'quantity': quantity,
-            'product_id': selectedId.id
+            'product_id': selectedId.id,
+            'ordinary_user_id': courier.id
         }
         axios.post('customers', topass).then(response => {
-            console.log(response);
+            location.reload();
             document.location.ref = 'accept-product'
         });
     }
@@ -104,6 +106,9 @@
 <style scoped>
     img {
         height: 20%;
+    }
+    a {
+        text-decoration: none;
     }
 
     input {

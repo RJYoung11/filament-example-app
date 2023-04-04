@@ -3,8 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductCourierResource\Pages;
-use App\Filament\Resources\ProductCourierResource\RelationManagers;
 use App\Filament\Resources\ToDeliverProductsResource\RelationManagers\ToDeliverProductsRelationManager;
+use App\Models\OrdinaryUser;
 use App\Models\ProductCourier;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -12,7 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductCourierResource extends Resource
 {
@@ -26,15 +25,14 @@ class ProductCourierResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return static::getModel()::query()->withCount('to_deliver_product');
+        return OrdinaryUser::withCount('courier')->where('type', 'courier');
+        // return static::getModel()::query()->withCount('to_deliver_product');
     }
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('courier_name')->required(),
-            Forms\Components\TextInput::make('rating')->disabled(),
+            ->schema([Forms\Components\TextInput::make('fullname')->required(),
             ]);
     }
 
@@ -42,9 +40,9 @@ class ProductCourierResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('courier_name'),
-            Tables\Columns\TextColumn::make('rating'),
-            Tables\Columns\TextColumn::make('to_deliver_product_count')->label("Item's to deliver"),
+                Tables\Columns\TextColumn::make('fullname'),
+                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('courier_count')->label("Item's to deliver"),
             ])
             ->filters([
                 //
@@ -60,7 +58,7 @@ class ProductCourierResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ToDeliverProductsRelationManager::class
+            ToDeliverProductsRelationManager::class,
         ];
     }
 

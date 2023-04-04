@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('ordinary_users', function (Blueprint $table) {
-            $table->string('type')->nullable()->after('password');
+        Schema::table('customers', function (Blueprint $table) {
+            $table->foreignId('ordinary_user_id')->nullable()->constrained('ordinary_users')->cascadeOnDelete();
         });
     }
 

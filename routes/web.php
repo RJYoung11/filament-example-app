@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CustomersController;
 use App\Models\Customers;
-use App\Models\DeliveryStatus;
 use App\Models\ProductCourier;
 use App\Models\Products;
 use Illuminate\Support\Facades\Auth;
@@ -35,14 +34,14 @@ Route::get('accept-product', function () {
 });
 
 Route::get('customers', function () {
-    logger(Customers::with('delivery')->with('product')->get());
-
     return view('customers\customers', [
         'customers' => Customers::with('delivery')->with('product')->get(),
     ]);
 });
 
 Route::post('customers', [CustomersController::class, 'store']);
+
+Route::post('add-with-courier', [CustomersController::class, 'store_deliver']);
 
 Route::get('confirmation', function () {
     return view('customers\item-confirmation');
@@ -60,8 +59,12 @@ Route::get('update-status/{id}', function ($id) {
 
 Route::get('status', function () {
     return view('couriers\orderstatus', [
-        'orders' => DeliveryStatus::with('product')->with('customer')->where('customer_id', Auth::guard('ordinary')->user()->id)->get(),
+        'orders' => Customers::with('delivery')->with('product')->get(),
     ]);
+});
+
+Route::get('to-deliver-products', function () {
+    return view('couriers\deliverproducts');
 });
 
 Route::get('logout', function () {

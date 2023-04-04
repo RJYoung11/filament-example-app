@@ -20,38 +20,26 @@
     </div>
 
     <div class="w3-container orders">
-        <h2>List of Orders</h2>
+        <h2>Your Order/s</h2>
         <br><br>
 
         <div class="row">
             @foreach ($orders as $order)
                 <div class="column">
-                    <div class="card">
-                        <h4 style="text-align: center">{{ $order->product->product_name }}</h4>
-                        <p>Status: {{ $order->status }}</p>
-                        <p>Original Price ($): {{ $order->product->price }}</p>
-                        <p>To Pay ($): {{ $order->product->price * $order->customer->quantity }}</p>
-                    </div>
+                    @if ($order->ordinary_user_id === Auth::guard('ordinary')->user()->id)
+                        <div class="card">
+                            <div style="text-align: center">
+                                <img src="{{ asset('storage/' . $order->product->file) }}">
+                            </div>
+                            <h4 style="text-align: center">{{ $order->product->product_name }}</h4>
+                            <p>Original Price ($): {{ $order->product->price }}</p>
+                            <p>To Pay ($): {{ $order->product->price * $order->quantity }}</p>
+                            <p>Status: {{ is_null($order->delivery) ? 'Pending' : $order->delivery->status }}</p>
+                        </div>
+                    @endif
                 </div>
             @endforeach
         </div>
-
-        {{-- <table class="w3-table-all">
-            <tr>
-                <th>Product Name</th>
-                <th>Status</th>
-                <th>Original Price ($)</th>
-                <th>To Pay ($)</th>
-            </tr>
-            @foreach ($orders as $order)
-                <tr>
-                    <td>{{ $order->product->product_name }}</td>
-                    <td>{{ $order->status }}</td>
-                    <td>{{ $order->product->price }}</td>
-                    <td>{{ $order->product->price * $order->customer->quantity }}</td>
-                </tr>
-            @endforeach
-        </table> --}}
     </div>
 
 </body>
@@ -65,6 +53,13 @@
 </script>
 
 <style>
+    img {
+        height: 20%;
+    }
+
+    a {
+        text-decoration: none;
+    }
     .header {
         background-color: rgb(224, 224, 224);
         height: 70px;
@@ -73,18 +68,15 @@
     }
 
     .orders {
-        width: 60%;
+        width: 80%;
         margin-left: auto;
         margin-right: auto;
     }
 
-    tr {
-        padding: 20px;
-    }
 
     .column {
         float: left;
-        width: 30%;
+        width: 33%;
         padding: 0 10px;
     }
 

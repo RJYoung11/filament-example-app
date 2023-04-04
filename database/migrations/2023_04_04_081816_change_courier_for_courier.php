@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('ordinary_users', function (Blueprint $table) {
-            $table->string('type')->nullable()->after('password');
+        Schema::table('delivery_statuses', function (Blueprint $table) {
+            $table->dropForeign(['courier_id']);
+
+            $table->foreign('courier_id')
+                ->references('id')
+                ->on('ordinary_users')
+                ->onDelete('cascade');
         });
     }
 

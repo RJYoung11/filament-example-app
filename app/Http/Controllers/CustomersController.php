@@ -25,6 +25,16 @@ class CustomersController extends Controller
         return $newCustomer;
     }
 
+    public function store_deliver(Request $request)
+    {
+        $deliver = DeliveryStatus::firstOrCreate(
+            ['customer_id' => $request->customer_id, 'product_id' => $request->product_id, 'courier_id' => $request->courier_id],
+            ['courier_name' => $request->courier_name, 'status' => $request->status]
+        );
+
+        return $deliver;
+    }
+
     public function checkStatus($id)
     {
         $customer = DeliveryStatus::where('customer_id', $id)->first();
