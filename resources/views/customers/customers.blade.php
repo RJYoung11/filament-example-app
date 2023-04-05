@@ -64,9 +64,8 @@
         document.getElementById("mySidenav").style.width = "0";
     }
     const toDeliver = (data, courier) => {
-        console.log('test');
         let deliver = {
-            courier_name: courier.firstname + ' ' + courier.lastname,
+            courier_name: courier.fullname,
             customer_id: data.id,
             product_id: data.product_id,
             courier_id: courier.id,
