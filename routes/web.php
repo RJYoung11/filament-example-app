@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CustomersController;
 use App\Models\Customers;
+use App\Models\DeliveryStatus;
 use App\Models\ProductCourier;
 use App\Models\Products;
 use Illuminate\Support\Facades\Auth;
@@ -59,12 +60,16 @@ Route::get('update-status/{id}', function ($id) {
 
 Route::get('status', function () {
     return view('couriers\orderstatus', [
-        'orders' => Customers::with('delivery')->with('product')->get(),
+        'orders' => Customers::with('delivery')->with('product')->where('ordinary_user_id', Auth::guard('ordinary')->user()->id)->get(),
     ]);
 });
 
 Route::get('to-deliver-products', function () {
-    return view('couriers\deliverproducts');
+    $status = DeliveryStatus::with('product')->with('customer')->with('courier')->where('courier_id', Auth::guard('ordinary')->user()->id)->get();
+
+    return view('couriers\deliverproducts', [
+        'delivery' => $status,
+    ]);
 });
 
 Route::get('logout', function () {

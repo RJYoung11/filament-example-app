@@ -8,20 +8,23 @@
 </head>
 
 <body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="accept-product" style="margin-right: 20px">Home</a>
+        @if (Auth::guard('ordinary')->user()->type === 'courier')
+            <a href="customers" style="margin-right: 20px">Customers</a>
+            <a href="to-deliver-products" style="margin-right: 20px">To Deliver</a>
+        @else
+            <a href="status" style="margin-right: 20px">Order Status</a>
+        @endif
+        <a href="/logout">Logout</a>
+    </div>
     <div class="header">
         <p class="headerP">
-            <a href="accept-product" style="margin-right: 20px">Home</a>
-
-            @if (Auth::guard('ordinary')->user()->type === 'courier')
-                <a href="customers" style="margin-right: 20px">Customers</a>
-                <a href="to-deliver-products" style="margin-right: 20px">To Deliver Products</a>
-            @else
-                <a href="status" style="margin-right: 20px">Order Status</a>
-            @endif
-            <a href="/logout">Logout</a>
+            {{ Auth::guard('ordinary')->user()->fullname }}
         </p>
+        <span class="navbarIcon" onclick="openNav()">&#9776; </span>
 
-        <i class="fa fa-bars icon"></i>
     </div>
     <div class="display">
         <div class="row">
@@ -55,7 +58,8 @@
 
                 <div style="float: right;">
                     @if (Auth::guard('ordinary')->user()->type === 'customer')
-                        <button onclick="placeOrder(JSON.parse('{{ Auth::guard('ordinary')->user() }}'))">Place Order</button>
+                        <button onclick="placeOrder(JSON.parse('{{ Auth::guard('ordinary')->user() }}'))">Place
+                            Order</button>
                     @endif
                 </div>
             </footer>
@@ -66,6 +70,14 @@
 <script>
     var obj = {}
     var selectedId = ''
+
+    const openNav = () => {
+        document.getElementById("mySidenav").style.width = window.innerWidth < 1000 ? "500px" : "250px";
+    }
+
+    const closeNav = () => {
+        document.getElementById("mySidenav").style.width = "0";
+    }
 
     const clickButton = (product) => {
         document.getElementById(product.id).style.backgroundColor = '#C9E3CC'
@@ -107,8 +119,54 @@
     img {
         height: 20%;
     }
+
     a {
         text-decoration: none;
+    }
+
+    a:not(.closebtn) {
+        width: 250px;
+    }
+
+    .navbarIcon {
+        font-size: 30px;
+        cursor: pointer;
+        margin: 20px;
+    }
+
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+        float: right;
     }
 
     input {
@@ -200,10 +258,18 @@
     }
 
     @media only screen and (max-width: 1000px) {
+        img {
+            height: 10%;
+        }
+
         .column {
             width: 100%;
             display: block;
             margin-bottom: 20px;
+        }
+
+        .card {
+            margin-bottom: 50px;
         }
 
         .body {
@@ -229,6 +295,8 @@
 
         p {
             font-size: 40px;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
 
         .span {
@@ -242,10 +310,12 @@
 
         .header {
             height: 6%;
+            padding-top: 25px;
         }
 
         .headerP {
-            display: none
+            display: none;
+            margin-bottom: 50px;
         }
 
         .icon {
@@ -257,6 +327,21 @@
 
         .row {
             padding-top: 15%;
+        }
+
+        .navbarIcon {
+            font-size: 50px;
+            margin-left: 30px;
+        }
+
+        .sidenav a {
+            font-size: 50px;
+            padding-bottom: 5%;
+            padding-top: 5%;            
+        }
+
+        .sidenav a:not(.closebtn) {
+            width: 400px;
         }
     }
 </style>

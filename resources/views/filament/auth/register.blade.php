@@ -26,7 +26,7 @@
             <option value="courier">Courier</option>
         </select>
         <button onclick="onSubmit()">Submit</button>
-        <br><br>
+        <p>or</p>
         <p>
             Already had an account? <a href="/login">Login </a>
         </p>
@@ -59,6 +59,8 @@
         margin-left: auto;
         margin-right: auto;
         border-radius: 10px;
+        margin-top: 5%;
+        box-shadow: 5px 8px 5px rgb(177, 177, 177, 0.5);
     }
 
     label {
@@ -72,7 +74,7 @@
         margin-bottom: 20px;
         border: none;
         border-bottom: 1px solid black;
-        background-color: rgba(230, 230, 230, 0.3)
+        background-color: rgba(230, 230, 230, 0.1)
     }
 
     button {
@@ -87,7 +89,6 @@
         color: #fff;
         background-color: #4CAF50;
         border: none;
-        box-shadow: 0 9px #999;
     }
 
     button:hover {
@@ -95,9 +96,7 @@
     }
 
     button:active {
-        background-color: #3e8e41;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
+        background-color: #306932;
     }
 
     h2 {
@@ -110,17 +109,13 @@
     p {
         font-size: 13px;
         font-family: Arial, Helvetica, sans-serif;
-        margin-left: 50%;
+        text-align: center;
     }
 
     @media only screen and (max-width: 900px) {
         #form {
-            width: 85%;
-        }
-
-        p {
-            font-family: Arial, Helvetica, sans-serif;
-            margin-left: 50%;
+            background-color: white;
+            width: 90%;
         }
     }
 </style>

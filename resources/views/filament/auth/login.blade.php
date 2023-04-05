@@ -10,6 +10,9 @@
 </head>
 
 <body>
+    <div class="background">
+
+    </div>
     <div id="form">
         <h2>Login</h2>
         <label for="email">Email</label>
@@ -18,7 +21,7 @@
         <input type="password" id="password" name="password">
         <br><br>
         <button onclick="onSubmit()">Submit</button>
-        <br><br>
+        <p>or</p>
         <p>
             No account yet? <a href="/register">Register</a>
         </p>
@@ -47,11 +50,13 @@
 <style scoped>
     #form {
         background-color: rgba(205, 205, 205, 0.3);
-        width: 25%;
+        width: 20%;
         padding: 20px;
         margin-left: auto;
         margin-right: auto;
-        border-radius: 10px
+        border-radius: 10px;
+        margin-top: 5%;
+        box-shadow: 5px 8px 5px rgb(177, 177, 177, 0.5);
     }
 
     label {
@@ -65,7 +70,7 @@
         margin-bottom: 20px;
         border: none;
         border-bottom: 1px solid black;
-        background-color: rgba(225, 225, 225, 0.3)
+        background-color: rgba(225, 225, 225, 0.1)
     }
 
     button {
@@ -80,7 +85,6 @@
         color: #fff;
         background-color: #4CAF50;
         border: none;
-        box-shadow: 0 9px #999;
     }
 
     button:hover {
@@ -88,9 +92,7 @@
     }
 
     button:active {
-        background-color: #3e8e41;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
+        background-color: #336f35;
     }
 
     h2 {
@@ -103,17 +105,13 @@
     p {
         font-size: 13px;
         font-family: Arial, Helvetica, sans-serif;
-        margin-left: 60%;
+        text-align: center;
     }
 
     @media only screen and (max-width: 900px) {
         #form {
-            width: 85%;
-        }
-
-        p {
-            font-family: Arial, Helvetica, sans-serif;
-            margin-left: 50%
+            background-color: white;
+            width: 90%;
         }
     }
 </style>

@@ -7,46 +7,66 @@
 </head>
 
 <body>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="accept-product" style="margin-right: 20px">Home</a>
+        @if (Auth::guard('ordinary')->user()->type === 'courier')
+            <a href="customers" style="margin-right: 20px">Customers</a>
+            <a href="to-deliver-products" style="margin-right: 20px">To Deliver</a>
+        @else
+            <a href="status" style="margin-right: 20px">Order Status</a>
+        @endif
+        <a href="/logout">Logout</a>
+    </div>
     <div class="header">
-        <p style="margin: 0; padding: 10px; float: right; margin-right: 5%; margin-top: 15px">
-            <a href="accept-product" style="margin-right: 20px">Home</a>
-            @if (Auth::guard('ordinary')->user()->type === 'customer')
-                <a href="status" style="margin-right: 20px">Order Status</a>
-            @else
-                <a href="customers" style="margin-right: 20px">Customers</a>
-                <a href="to-deliver-products" style="margin-right: 20px">To Deliver Products</a>
-            @endif
-            <a href="/logout">Logout</a>
+        <span class="navbarIcon" onclick="openNav()">&#9776; </span>
+        <p class="headerP">
+            {{ Auth::guard('ordinary')->user()->fullname }}
         </p>
     </div>
 
-    <div class="w3-container orders">
-        <h2>List of Orders</h2>
-        <br><br>
-
-        <ul class="w3-ul w3-card-4">
+    <div class="display">
+        <h2>Customers</h2>
+        <br>
+        <div class="row">
             @foreach ($customers as $customer)
-                <li class="w3-bar {{ is_null($customer->delivery) ? 'list' : 'unallowed' }}"
-                    onclick="toDeliver(JSON.parse( '{{ $customer }}'), JSON.parse ('{{ Auth::guard('ordinary')->user() }}'))">
-                    <span class="w3-bar-item w3-small w3-right">Courier:
-                        {{ !is_null($customer->delivery) ? $customer->delivery->courier_name : 'N/A' }}</span>
-                    <img src="{{ asset('storage/' . $customer->product->file) }}" class="w3-bar-item w3-hide-small"
-                        style="width:85px">
-                    <div class="w3-bar-item">
-                        <span class="w3-large">{{ $customer->firstname . ' ' . $customer->lastname }}</span><br>
-                        <span class="w3-small">{{ $customer->product->product_name }}</span><br>
+                <div class="column">
+                    <div class="card" id="{{ $customer->id }}">
+                        <img src="{{ asset('storage/' . $customer->product->file) }}">
+                        <p>Buyer: {{ $customer->firstname . ' ' . $customer->lastname }}</p>
+                        <p>To Pay: {{ $customer->quantity * $customer->product->price }}</p>
+                        <p>Courier: <b>{{ !is_null($customer->delivery) ? $customer->delivery->courier_name : 'N/A' }}
+                            </b></p>
+                        <br>
+                        <br>
+
+                        <button class="{{ is_null($customer->delivery) ? 'list' : 'unallowed' }}"
+                            {{ !is_null($customer->delivery) ? 'disabled' : '' }}
+                            onclick="toDeliver(JSON.parse( '{{ $customer }}'), JSON.parse ('{{ Auth::guard('ordinary')->user() }}'))">Deliver</button>
                     </div>
-                </li>
+                </div>
             @endforeach
-        </ul>
+        </div>
     </div>
 
 </body>
 
 <script>
+    let customers = {!! json_encode($customers->toArray()) !!};
+
+    console.log(customers);
+    const openNav = () => {
+        document.getElementById("mySidenav").style.width = window.innerWidth < 1000 ? "500px" : "250px";
+    }
+
+    const closeNav = () => {
+        document.getElementById("mySidenav").style.width = "0";
+    }
     const toDeliver = (data, courier) => {
+        console.log('test');
         let deliver = {
-            courier_name: courier.fullname,
+            courier_name: courier.firstname + ' ' + courier.lastname,
             customer_id: data.id,
             product_id: data.product_id,
             courier_id: courier.id,
@@ -62,33 +82,239 @@
 </script>
 
 </html>
-<style>
-    .header {
-        background-color: rgb(224, 224, 224);
-        height: 70px;
-        width: 100%;
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+<style scoped>
+    img {
+        height: 20%;
     }
 
     a {
         text-decoration: none;
     }
 
-    .orders {
-        width: 60%;
-        margin-left: auto;
-        margin-right: auto;
+    a:not(.closebtn) {
+        width: 250px;
+    }
+
+    .navbarIcon {
+        font-size: 30px;
+        cursor: pointer;
+        margin: 20px;
+    }
+
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+        float: right;
+    }
+
+    input {
+        outline: none;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-bottom: 1px solid black;
+        background-color: rgba(225, 225, 225, 0.3)
+    }
+
+    .column {
+        float: left;
+        width: 33%;
+        padding: 0 10px;
+        margin-bottom: 20px;
+    }
+
+    .row {
+        margin: 0 -5px;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        padding: 16px;
+        text-align: center;
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+
+    .card:hover {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .display {
+        margin: 10%;
+        margin-top: 5%;
+    }
+
+    .body {
+        padding: 20px;
+    }
+
+    button {
+        padding: 10px;
+        border-radius: 5px;
+        outline: none;
+        cursor: pointer;
+        color: #fff;
+        background-color: #4CAF50;
+        border: none;
+        width: 100%;
+    }
+
+    button:hover {
+        background-color: #3e8e41
+    }
+
+    button:active {
+        background-color: #56a459;
+    }
+
+    .header {
+        background-color: rgb(224, 224, 224);
+        height: 70px;
+        width: 100%;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top: 0;
+    }
+
+    .headerP {
+        margin: 0;
+        padding: 10px;
+        float: right;
+        margin-right: 5%;
+        margin-top: 15px
+    }
+
+    .icon {
+        display: none;
+    }
+
+    .unallowed:disabled {
+        cursor: not-allowed;
+        background-color: white;
+        color: grey;
     }
 
     .list {
         cursor: pointer;
     }
 
-    .list:hover {
-        background-color: rgb(237, 237, 237);
-    }
+    @media only screen and (max-width: 1000px) {
+        img {
+            height: 10%;
+        }
 
-    .unallowed {
-        cursor: not-allowed;
+        .card {
+            margin-bottom: 50px;
+        }
+
+        .column {
+            width: 100%;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .body {
+            height: 50%;
+            width: 100%;
+        }
+
+        .display {
+            padding: 5px;
+            margin: 15px;
+            padding-top: 10%;
+        }
+
+        h2 {
+            font-size: 80px;
+            margin-bottom: 20px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        input {
+            font-size: 60px;
+        }
+
+        p {
+            font-size: 40px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        .span {
+            font-size: 40px;
+        }
+
+        button {
+            font-size: 40px;
+            padding: 20px;
+        }
+
+        .header {
+            height: 6%;
+        }
+
+        .headerP {
+            display: none
+        }
+
+        .icon {
+            display: block;
+            font-size: 100px;
+            float: right;
+            margin: 20px;
+        }
+
+        .navbarIcon {
+            font-size: 50px;
+            margin-left: 30px;
+        }
+
+        .sidenav a {
+            font-size: 50px;
+            padding-bottom: 5%;
+            padding-top: 5%;
+        }
+
+        .sidenav a:not(.closebtn) {
+            width: 400px;
+        }
     }
 </style>
