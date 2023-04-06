@@ -44,8 +44,19 @@
                         <p>To Pay ($): {{ $order->product->price * $order->quantity }}</p>
                         <p>Status: <b> {{ is_null($order->delivery) ? 'Pending' : $order->delivery->status }} </b>
                         </p>
-                        <button style="margin-bottom: 10px; margin-top: 20px;">Arrived</button>
-                        <button style="background-color: white; color: red; border: 1px solid red;">Cancel</button>
+                        <button onclick="productArrived(JSON.parse( '{{ $order }}'))"
+                            style="margin-bottom: 10px; margin-top: 20px;"
+                            {{ !is_null($order->delivery) && ($order->delivery->status === 'Process' || $order->delivery->status === 'Package Arrived') ? 'disabled' : '' }}>
+                            {{ !is_null($order->delivery) && $order->delivery->status === 'Package Arrived' ? $order->delivery->status : 'Arrived' }}
+                        </button>
+                        @if (
+                            is_null($order->delivery)||
+                            !is_null($order->delivery) &&
+                                ($order->delivery->status !== 'On the way' && $order->delivery->status !== 'Package Arrived'))
+                            <button onclick="cancelOrder(JSON.parse( '{{ $order }}'))"
+                                style="background-color: white; color: red; border: 1px solid red;">Cancel
+                                Order</button>
+                        @endif
                     </div>
                 </div>
             @endforeach
@@ -67,6 +78,24 @@
 
     const closeNav = () => {
         document.getElementById("mySidenav").style.width = "0";
+    }
+
+    const productArrived = (record) => {
+        let data = {
+            id: record.delivery.id,
+            status: 'Package Arrived'
+        }
+        axios.post('update-status', data).then(response => {
+            location.reload();
+        });
+    }
+
+    const cancelOrder = (record) => {
+        axios.post('cancel-order', record).then(response => {
+            console.log(response);
+
+            location.reload();
+        });
     }
 </script>
 
@@ -217,11 +246,17 @@
         margin-right: auto;
     }
 
+    button:disabled {
+        background-color: white;
+        border: 1px solid rgb(171, 171, 171);
+        color: grey;
+    }
+
     @media only screen and (max-width: 1000px) {
         .column {
             width: 100%;
             display: block;
-            margin-bottom: 20px;
+            margin-bottom: 5%;
         }
 
         .orders {

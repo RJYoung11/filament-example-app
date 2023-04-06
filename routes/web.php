@@ -54,9 +54,9 @@ Route::get('/all-couriers', function () {
     return view('couriers\courier', ['courier' => $allCouriers]);
 });
 
-Route::get('update-status/{id}', function ($id) {
-    logger($id);
-});
+Route::post('update-status', [CustomersController::class, 'updateStatus']);
+
+Route::post('cancel-order', [CustomersController::class, 'cancelOrder']);
 
 Route::get('status', function () {
     return view('couriers\orderstatus', [
@@ -65,7 +65,7 @@ Route::get('status', function () {
 });
 
 Route::get('to-deliver-products', function () {
-    $status = DeliveryStatus::with('product')->with('customer')->with('courier')->where('courier_id', Auth::guard('ordinary')->user()->id)->get();
+    $status = DeliveryStatus::with('product')->with('customer')->with('courier')->where([['courier_id', '=', Auth::guard('ordinary')->user()->id], ['status', '!=', 'Package Arrived']])->get();
 
     return view('couriers\deliverproducts', [
         'delivery' => $status,

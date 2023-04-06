@@ -42,8 +42,12 @@
                         <br>
 
                         <button class="{{ is_null($customer->delivery) ? 'list' : 'unallowed' }}"
-                            {{ !is_null($customer->delivery) ? 'disabled' : '' }}
-                            onclick="toDeliver(JSON.parse( '{{ $customer }}'), JSON.parse ('{{ Auth::guard('ordinary')->user() }}'))">Deliver</button>
+                            style="margin-bottom: 10px;" {{ !is_null($customer->delivery) ? 'disabled' : '' }}
+                            onclick="toDeliver(JSON.parse( '{{ $customer }}'), JSON.parse ('{{ Auth::guard('ordinary')->user() }}'))">
+                            {{ !is_null($customer->delivery) && $customer->delivery->status === 'Package Arrived' ? 'Successfully Delivered' : 'Deliver' }}</button>
+                        {{-- @if ($customer->delivery->status === 'Package Arrived')
+                            <button style="background-color: white; color: red; border: 1px solid red;">Remove</button>
+                        @endif --}}
                     </div>
                 </div>
             @endforeach

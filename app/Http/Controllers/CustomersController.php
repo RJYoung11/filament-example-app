@@ -42,6 +42,24 @@ class CustomersController extends Controller
         return $customer;
     }
 
+    public function updateStatus(Request $request)
+    {
+        $update = DeliveryStatus::where('id', $request->id)->update(['status' => $request->status]);
+
+        return $update;
+    }
+
+    public function cancelOrder(Request $request)
+    {
+        $update = Products::where('id', $request->product_id)->update([
+            'item_on_hand' => ($request->product['item_on_hand'] + $request->quantity),
+        ]);
+
+        Customers::where('id', $request->id)->delete();
+
+        return $update;
+    }
+
     public function update($id, $rate, Customers $customers)
     {
         $customerUpdate = DeliveryStatus::where('customer_id', $id)->delete();

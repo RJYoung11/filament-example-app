@@ -27,6 +27,7 @@
 
     </div>
     <div class="display">
+        <h2>Products</h2>
         <div class="row">
             @foreach ($products as $product)
                 <div class="column">
@@ -188,7 +189,6 @@
 
     .row {
         margin: 0 -5px;
-        padding-top: 10%;
     }
 
     .row:after {

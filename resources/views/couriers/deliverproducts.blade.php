@@ -31,6 +31,12 @@
         <br>
 
         <div class="row">
+            <div style="text-align: center">
+                @if (count($delivery) < 1)
+                    <img src="{{ asset('storage/empty.png') }}"
+                        style="height: 65%;" />
+                @endif
+            </div>
             @foreach ($delivery as $deliver)
                 <div class="column">
                     <div class="card">
@@ -38,9 +44,13 @@
                             <img src="{{ asset('storage/' . $deliver->product->file) }}">
                         </div>
                         <h2 style="text-align: center">{{ $deliver->product->product_name }}</h2>
-                        <p>Customer's Name: {{ $deliver->customer->firstname . ' ' . $deliver->customer->lastname }}</p>
+                        <p>Customer's Name: {{ $deliver->customer->firstname . ' ' . $deliver->customer->lastname }}
+                        </p>
                         <p>To Pay ($): {{ $deliver->product->price * $deliver->customer->quantity }}</p>
-                        <button>On the Way</button>
+                        @if ($deliver->status === 'Process')
+                            <button onclick="changeStatusDeliverToday(JSON.parse( '{{ $deliver }}'))">On the
+                                Way</button>
+                        @endif
                     </div>
                 </div>
             @endforeach
@@ -56,12 +66,23 @@
 
     console.log(delivery);
 
-    const  openNav = () => {
+    const openNav = () => {
         document.getElementById("mySidenav").style.width = window.innerWidth < 1000 ? "500px" : "250px";
     }
 
     const closeNav = () => {
         document.getElementById("mySidenav").style.width = "0";
+    }
+
+    const changeStatusDeliverToday = (record) => {
+        let data = {
+            id: record.id,
+            status: 'On the way'
+        }
+        axios.post('update-status', data).then(response => {
+            console.log(response);
+            location.reload();
+        });
     }
 </script>
 
@@ -215,7 +236,7 @@
             display: block;
             margin-bottom: 20px;
         }
-        
+
         .card {
             margin-bottom: 50px;
         }
@@ -282,10 +303,12 @@
             float: right;
             margin: 20px;
         }
+
         .navbarIcon {
             font-size: 50px;
             margin-left: 30px;
         }
+
         .sidenav a {
             font-size: 50px;
             padding-bottom: 5%;
