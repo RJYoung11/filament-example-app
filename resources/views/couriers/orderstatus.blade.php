@@ -18,6 +18,7 @@
         @else
             <a href="status" style="margin-right: 20px">Order Status</a>
         @endif
+        <a href="profile">Profile</a>
         <a href="/logout">Logout</a>
     </div>
 

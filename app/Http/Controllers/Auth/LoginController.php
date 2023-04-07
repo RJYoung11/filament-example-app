@@ -35,6 +35,13 @@ class LoginController extends Controller
         return view('filament\auth\register');
     }
 
+    public function profile()
+    {
+        return view('filament\pages\profile', [
+            'user' => Auth::guard('ordinary')->user(),
+        ]);
+    }
+
     public function signUp(Request $request)
     {
         $registered = OrdinaryUser::create([
