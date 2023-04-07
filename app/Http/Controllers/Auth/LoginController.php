@@ -42,6 +42,17 @@ class LoginController extends Controller
         ]);
     }
 
+    public function updateProfile(Request $request)
+    {
+        if (Hash::check($request->curpass, Auth::guard('ordinary')->user()->password)) {
+            OrdinaryUser::where('id', Auth::guard('ordinary')->user()->id)->update([
+                'password' => Hash::make($request->newpass),
+            ]);
+
+            return back();
+        }
+    }
+
     public function signUp(Request $request)
     {
         $registered = OrdinaryUser::create([

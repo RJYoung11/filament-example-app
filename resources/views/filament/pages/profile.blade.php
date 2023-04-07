@@ -41,16 +41,16 @@
         </div>
         <div class="input-box">
             <span class="prefix">Current Password</span>
-            <input id="curpass" type="text">
+            <input id="curpass" type="password">
         </div>
         <p class="note">Note: If you want to change the password, current password is required.</p>
         <div class="input-box">
             <span class="prefix">New Password</span>
-            <input id="newpass" type="text">
+            <input id="newpass" type="password">
         </div>
         <div class="input-box">
             <span class="prefix">Confirm Password</span>
-            <input id="conpass" type="text">
+            <input id="conpass" type="password">
         </div>
         <button onclick="onUpdate()">Update Profile</button>
         <br>
@@ -87,7 +87,10 @@
             if (obj.newpass === '') {
                 alert('Password field/s are empty.');
             } else {
-                obj.newpass === obj.conpass ? console.log("axios.post()") : alert("Passwords didn't match");
+                obj.newpass === obj.conpass ? axios.post('update-profile', obj).then(response => {
+                    console.log(response);
+                    // location.reload();
+                }) : alert("Passwords didn't match");
             }
         } else {
             alert("Update profile need's the current password");

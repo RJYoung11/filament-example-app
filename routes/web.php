@@ -80,6 +80,7 @@ Route::get('logout', function () {
 Route::get('login', [LoginController::class, 'login']);
 Route::get('register', [LoginController::class, 'register']);
 Route::get('profile', [LoginController::class, 'profile']);
+Route::post('update-profile', [LoginController::class, 'updateProfile']);
 
 Route::post('sign-up', [LoginController::class, 'signUp']);
 Route::post('sign-in', [LoginController::class, 'signIn']);
