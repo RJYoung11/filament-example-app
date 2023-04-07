@@ -20,14 +20,13 @@
         <a href="/logout">Logout</a>
     </div>
     <div class="header">
-        <span class="navbarIcon" onclick="openNav()">&#9776; </span>
+        <span class="navbarIcon" onclick="openNav()">&#9776; Customers</span>
         <p class="headerP">
             {{ Auth::guard('ordinary')->user()->fullname }}
         </p>
     </div>
 
     <div class="display">
-        <h2>Customers</h2>
         <br>
         <div class="row">
             @foreach ($customers as $customer)
@@ -260,7 +259,7 @@
         .display {
             padding: 5px;
             margin: 15px;
-            padding-top: 10%;
+            padding-top: 15%;
         }
 
         h2 {

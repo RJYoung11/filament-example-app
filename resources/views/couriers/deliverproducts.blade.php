@@ -20,40 +20,37 @@
     </div>
 
     <div class="header">
-        <span class="navbarIcon" onclick="openNav()">&#9776; </span>
+        <span class="navbarIcon" onclick="openNav()">&#9776; Deliver Products</span>
         <p class="headerP">
             {{ Auth::guard('ordinary')->user()->fullname }}
         </p>
     </div>
 
     <div class="w3-container orders">
-        <h2>To Deliver Products</h2>
         <br>
 
         <div class="row">
-            <div style="text-align: center">
-                @if (count($delivery) < 1)
-                    <img src="{{ asset('storage/empty.png') }}"
-                        style="height: 65%;" />
-                @endif
-            </div>
-            @foreach ($delivery as $deliver)
-                <div class="column">
-                    <div class="card">
-                        <div style="text-align: center">
-                            <img src="{{ asset('storage/' . $deliver->product->file) }}">
-                        </div>
-                        <h2 style="text-align: center">{{ $deliver->product->product_name }}</h2>
-                        <p>Customer's Name: {{ $deliver->customer->firstname . ' ' . $deliver->customer->lastname }}
-                        </p>
-                        <p>To Pay ($): {{ $deliver->product->price * $deliver->customer->quantity }}</p>
-                        @if ($deliver->status === 'Process')
-                            <button onclick="changeStatusDeliverToday(JSON.parse( '{{ $deliver }}'))">On the
-                                Way</button>
-                        @endif
-                    </div>
+            @if (count($delivery) < 1)
+                <div style="text-align: center">
+                    <img src="{{ asset('storage/empty.png') }}" />
                 </div>
-            @endforeach
+            @else
+                @foreach ($delivery as $deliver)
+                    <div class="column">
+                        <div class="card">
+                            <div style="text-align: center">
+                                <img src="{{ asset('storage/' . $deliver->product->file) }}">
+                            </div>
+                            <h2 style="text-align: center">{{ $deliver->product->product_name }}</h2>
+                            <p>Customer's Name: {{ $deliver->customer->firstname . ' ' . $deliver->customer->lastname }}
+                            </p>
+                            <p>To Pay ($): {{ $deliver->product->price * $deliver->customer->quantity }}</p>
+                            <button onclick="changeStatusDeliverToday(JSON.parse( '{{ $deliver }}'))"
+                                {{ $deliver->status !== 'Process' ? 'disabled' : '' }}>{{ $deliver->status === 'Process' ? 'On the Way' : 'Item Brought' }}</button>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </div>
     </div>
 
@@ -62,10 +59,6 @@
 </html>
 
 <script>
-    let delivery = {!! json_encode($delivery->toArray()) !!};
-
-    console.log(delivery);
-
     const openNav = () => {
         document.getElementById("mySidenav").style.width = window.innerWidth < 1000 ? "500px" : "250px";
     }
@@ -193,6 +186,12 @@
 
     button:hover {
         background-color: #3e8e41
+    }
+
+    button:disabled {
+        background-color: white;
+        color: grey;
+        border: 1px solid rgb(210, 210, 210);
     }
 
 

@@ -10,12 +10,12 @@
 <body>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="accept-product" style="margin-right: 20px">Home</a>
+        <a href="accept-product">Home</a>
         @if (Auth::guard('ordinary')->user()->type === 'courier')
-            <a href="customers" style="margin-right: 20px">Customers</a>
-            <a href="to-deliver-products" style="margin-right: 20px">To Deliver</a>
+            <a href="customers">Customers</a>
+            <a href="to-deliver-products">To Deliver</a>
         @else
-            <a href="status" style="margin-right: 20px">Order Status</a>
+            <a href="status">Order Status</a>
         @endif
         <a href="/logout">Logout</a>
     </div>
@@ -23,19 +23,22 @@
         <p class="headerP">
             {{ Auth::guard('ordinary')->user()->fullname }}
         </p>
-        <span class="navbarIcon" onclick="openNav()">&#9776; </span>
+        <span class="navbarIcon" onclick="openNav()">&#9776; Products</span>
 
     </div>
     <div class="display">
-        <h2>Products</h2>
         <div class="row">
             @foreach ($products as $product)
                 <div class="column">
-                    <div class="card" onclick="clickButton({{ $product }})" id="{{ $product->id }}">
+                    <div class="card" id="{{ $product->id }}">
                         <img src="{{ asset('storage/' . $product->file) }}">
                         <p>Name: {{ $product->product_name }}</p>
                         <p>Price: {{ $product->price }}</p>
-                        <p>Item's on Hand: {{ $product->item_on_hand }}</p>
+                        <p>Item's on Hand: {{ $product->item_on_hand }}</p><br>
+
+                        <button onclick="clickButton({{ $product }})"
+                            class="view-button">
+                            {{ Auth::guard('ordinary')->user()->type === 'customer' ? 'Add Order' : 'View Item' }}</button>
                     </div>
                 </div>
             @endforeach
@@ -49,21 +52,26 @@
                 <span onclick="unselect()" class="w3-button w3-display-topright span">&times;</span>
                 <h2 id="name"></h2>
             </header>
-            <div class="w3-container">
-                <input placeholder="How many of this item?" type="number" id="quantity">
-            </div>
+            <div class="modRow">
+                <div class="w3-container modColumn">
+                    <input placeholder="How many of this item?" type="number" id="quantity">
 
-            <footer class="w3-container">
-                <p id="item_on_hand"></p>
-                <p id="amount"></p>
+                    <footer class="w3-container">
+                        <p id="item_on_hand"></p>
+                        <p id="amount"></p>
 
-                <div style="float: right;">
-                    @if (Auth::guard('ordinary')->user()->type === 'customer')
-                        <button onclick="placeOrder(JSON.parse('{{ Auth::guard('ordinary')->user() }}'))">Place
-                            Order</button>
-                    @endif
+                        <div style="float: right;">
+                            @if (Auth::guard('ordinary')->user()->type === 'customer')
+                                <button onclick="placeOrder(JSON.parse('{{ Auth::guard('ordinary')->user() }}'))">Place
+                                    Order</button>
+                            @endif
+                        </div>
+                    </footer>
                 </div>
-            </footer>
+                <div class="modColumn" style="text-align: center">
+                    <img src="" style="height: 30%; margin: 25px; border-radius: 10px;" id="image">
+                </div>
+            </div>
         </div>
     </div>
 </body>
@@ -86,6 +94,7 @@
         document.getElementById('amount').innerHTML = 'Amount: ' + product.price
         document.getElementById('item_on_hand').innerHTML = "Item's on hand: " + product.item_on_hand
         document.getElementById('id01').style.display = 'block'
+        document.getElementById('image').src = "storage/" + product.file + ""
 
         selectedId = product
     }
@@ -108,10 +117,15 @@
             'product_id': selectedId.id,
             'ordinary_user_id': courier.id
         }
-        axios.post('customers', topass).then(response => {
-            location.reload();
-            document.location.ref = 'accept-product'
-        });
+
+        if (quantity !== '') {
+            axios.post('customers', topass).then(response => {
+                location.reload();
+                document.location.ref = 'accept-product'
+            });
+        } else {
+            alert("No quantity created!");
+        }
     }
 </script>
 
@@ -177,7 +191,7 @@
         margin-bottom: 20px;
         border: none;
         border-bottom: 1px solid black;
-        background-color: rgba(225, 225, 225, 0.3)
+        background-color: rgba(255, 255, 255, 0.1)
     }
 
     .column {
@@ -211,7 +225,7 @@
 
     .display {
         margin: 10%;
-        margin-top: 5%;
+        margin-top: 10%;
     }
 
     .body {
@@ -236,6 +250,21 @@
         background-color: #56a459;
     }
 
+
+    .view-button {
+        width: 100%; 
+        background-color: white; 
+        color: rgb(95, 169, 235); 
+        border: 1px solid rgb(95, 169, 235);
+        transition: transform 0.3s;
+    }
+
+    .view-button:hover {
+        background-color: rgb(173, 217, 255);
+        color: white;
+        border: 1px solid rgb(173, 217, 255);
+    }
+
     .header {
         background-color: rgb(224, 224, 224);
         height: 70px;
@@ -255,6 +284,18 @@
 
     .icon {
         display: none;
+    }
+
+    .modColumn {
+        float: left;
+        width: 50%;
+        padding: 10px;
+    }
+
+    .modRow::after {
+        content: "";
+        display: table;
+        clear: both;
     }
 
     @media only screen and (max-width: 1000px) {
@@ -280,6 +321,7 @@
         .display {
             padding: 5px;
             margin: 15px;
+            padding-top: 15%;
         }
 
         h2 {
@@ -326,7 +368,7 @@
         }
 
         .row {
-            padding-top: 15%;
+            padding-top: 0;
         }
 
         .navbarIcon {
@@ -337,7 +379,7 @@
         .sidenav a {
             font-size: 50px;
             padding-bottom: 5%;
-            padding-top: 5%;            
+            padding-top: 5%;
         }
 
         .sidenav a:not(.closebtn) {

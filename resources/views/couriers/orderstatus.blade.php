@@ -22,14 +22,13 @@
     </div>
 
     <div class="header">
-        <span class="navbarIcon" onclick="openNav()">&#9776; </span>
+        <span class="navbarIcon" onclick="openNav()">&#9776; Order/s</span>
         <p class="headerP">
             {{ Auth::guard('ordinary')->user()->fullname }}
         </p>
     </div>
 
     <div class="w3-container orders">
-        <h2>Your Order/s</h2>
         <br>
 
         <div class="row">
