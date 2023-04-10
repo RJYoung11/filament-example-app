@@ -3,15 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomersResource\Pages;
-use App\Filament\Resources\CustomersResource\RelationManagers;
 use App\Models\Customers;
 use App\Models\Products;
-use App\Notifications\CustomerAdded;
 use Filament\Forms;
-use Filament\Forms\Components\Builder;
-use Filament\Notifications\Events\DatabaseNotificationsSent;
-use Filament\Notifications\Notification;
-use Filament\Pages\Actions\CreateAction;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -23,6 +17,8 @@ class CustomersResource extends Resource
     protected static ?string $model = Customers::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
+
+    protected static ?string $navigationGroup = 'Delivery';
 
     protected static function getNavigationBadge(): ?string
     {
@@ -54,7 +50,7 @@ class CustomersResource extends Resource
                 Forms\Components\Select::make('product_id')->required()
                     ->label('Select an Item')
                     ->options(Products::all()->pluck('product_name', 'id'))
-                    ->searchable()
+                    ->searchable(),
             ]);
     }
 
@@ -66,7 +62,7 @@ class CustomersResource extends Resource
                 Tables\Columns\TextColumn::make('lastname')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('quantity')->searchable(),
-                Tables\Columns\TextColumn::make('purchased_item')->searchable()
+                Tables\Columns\TextColumn::make('purchased_item')->searchable(),
 
             ])
             ->poll('5s')

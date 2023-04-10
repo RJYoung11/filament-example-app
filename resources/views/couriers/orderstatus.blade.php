@@ -240,6 +240,7 @@
     }
 
     .orders {
+        padding: 0;
         padding-top: 5%;
         width: 80%;
         margin-left: auto;

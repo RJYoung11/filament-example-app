@@ -28,6 +28,7 @@
 
     </div>
     <div class="display">
+        <br>
         <div class="row">
             @foreach ($products as $product)
                 <div class="column">
@@ -37,8 +38,7 @@
                         <p>Price: {{ $product->price }}</p>
                         <p>Item's on Hand: {{ $product->item_on_hand }}</p><br>
 
-                        <button onclick="clickButton({{ $product }})"
-                            class="view-button">
+                        <button onclick="clickButton({{ $product }})" class="view-button">
                             {{ Auth::guard('ordinary')->user()->type === 'customer' ? 'Add Order' : 'View Item' }}</button>
                     </div>
                 </div>
@@ -54,6 +54,9 @@
                 <h2 id="name"></h2>
             </header>
             <div class="modRow">
+                <div class="w3-container modColumn" style="text-align: center;">
+                    <img src="" style="height: 30%; margin: 25px; border-radius: 10px;" id="image">
+                </div>
                 <div class="w3-container modColumn">
                     <input placeholder="How many of this item?" type="number" id="quantity">
 
@@ -68,9 +71,6 @@
                             @endif
                         </div>
                     </footer>
-                </div>
-                <div class="modColumn" style="text-align: center">
-                    <img src="" style="height: 30%; margin: 25px; border-radius: 10px;" id="image">
                 </div>
             </div>
         </div>
@@ -226,7 +226,7 @@
 
     .display {
         margin: 10%;
-        margin-top: 10%;
+        margin-top: 5%;
     }
 
     .body {
@@ -253,9 +253,9 @@
 
 
     .view-button {
-        width: 100%; 
-        background-color: white; 
-        color: rgb(95, 169, 235); 
+        width: 100%;
+        background-color: white;
+        color: rgb(95, 169, 235);
         border: 1px solid rgb(95, 169, 235);
         transition: transform 0.3s;
     }

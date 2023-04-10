@@ -59,7 +59,7 @@
 <script>
     let customers = {!! json_encode($customers->toArray()) !!};
 
-    console.log(customers);
+    // console.log(customers);
     const openNav = () => {
         document.getElementById("mySidenav").style.width = window.innerWidth < 1000 ? "500px" : "250px";
     }

@@ -18,8 +18,6 @@ class ToDeliverProductsRelationManager extends RelationManager
 
     protected function getTableQuery(): Builder
     {
-        logger(parent::getTableQuery()->get());
-
         return parent::getTableQuery()->withoutGlobalScopes();
     }
 
