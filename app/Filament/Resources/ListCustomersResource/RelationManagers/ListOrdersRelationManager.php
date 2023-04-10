@@ -42,7 +42,7 @@ class ListOrdersRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('quantity'),
                 Tables\Columns\TextColumn::make('ordinary_user_id')
                     ->formatStateUsing(function ($record) {
-                        return DeliveryStatus::where('customer_id', $record->id)->first()->status;
+                        return ! is_null(DeliveryStatus::where('customer_id', $record->id)->first()) ? DeliveryStatus::where('customer_id', $record->id)->first()->status : 'Process';
                     })
                     ->label('Status'),
             ])
@@ -50,11 +50,7 @@ class ListOrdersRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                //
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

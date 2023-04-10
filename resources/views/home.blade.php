@@ -92,7 +92,7 @@
     const clickButton = (product) => {
         document.getElementById(product.id).style.backgroundColor = '#C9E3CC'
         document.getElementById('name').innerHTML = product.product_name
-        document.getElementById('amount').innerHTML = 'Amount: ' + product.price
+        document.getElementById('amount').innerHTML = 'Amount ($): ' + product.price
         document.getElementById('item_on_hand').innerHTML = "Item's on hand: " + product.item_on_hand
         document.getElementById('id01').style.display = 'block'
         document.getElementById('image').src = "storage/" + product.file + ""

@@ -29,26 +29,38 @@
 
     <div class="display">
         <br>
+
+        <div style="padding-bottom: 10px;">
+            <select class="select-option" onchange="onFilter(this)" id="selected">
+                <option value="all">All</option>
+                <option value="without">Without Courier</option>
+                <option value="with">With Courier</option>
+            </select>
+        </div>
         <div class="row">
             @foreach ($customers as $customer)
                 <div class="column">
-                    <div class="card" id="{{ $customer->id }}">
-                        <img src="{{ asset('storage/' . $customer->product->file) }}">
-                        <p>Buyer: {{ $customer->firstname . ' ' . $customer->lastname }}</p>
-                        <p>To Pay: {{ $customer->quantity * $customer->product->price }}</p>
-                        <p>Courier: <b>{{ !is_null($customer->delivery) ? $customer->delivery->courier_name : 'N/A' }}
-                            </b></p>
-                        <br>
-                        <br>
+                    @if (!is_null($customer))
+                        <div class="card" id="{{ $customer->id }}">
+                            <img src="{{ asset('storage/' . $customer->product->file) }}">
+                            <p>Buyer: {{ $customer->firstname . ' ' . $customer->lastname }}</p>
+                            <p>To Pay: {{ $customer->quantity * $customer->product->price }}</p>
+                            <p>Courier:
+                                <b>{{ !is_null($customer->delivery) ? $customer->delivery->courier_name : 'N/A' }}
+                                </b>
+                            </p>
+                            <br>
+                            <br>
 
-                        <button class="{{ is_null($customer->delivery) ? 'list' : 'unallowed' }}"
-                            style="margin-bottom: 10px;" {{ !is_null($customer->delivery) ? 'disabled' : '' }}
-                            onclick="toDeliver(JSON.parse( '{{ $customer }}'), JSON.parse ('{{ Auth::guard('ordinary')->user() }}'))">
-                            {{ !is_null($customer->delivery) && $customer->delivery->status === 'Package Arrived' ? 'Successfully Delivered' : 'Deliver' }}</button>
-                        {{-- @if ($customer->delivery->status === 'Package Arrived')
+                            <button class="{{ is_null($customer->delivery) ? 'list' : 'unallowed' }}"
+                                style="margin-bottom: 10px;" {{ !is_null($customer->delivery) ? 'disabled' : '' }}
+                                onclick="toDeliver(JSON.parse( '{{ $customer }}'), JSON.parse ('{{ Auth::guard('ordinary')->user() }}'))">
+                                {{ !is_null($customer->delivery) && $customer->delivery->status === 'Package Arrived' ? 'Successfully Delivered' : 'Deliver' }}</button>
+                            {{-- @if ($customer->delivery->status === 'Package Arrived')
                             <button style="background-color: white; color: red; border: 1px solid red;">Remove</button>
                         @endif --}}
-                    </div>
+                        </div>
+                    @endif
                 </div>
             @endforeach
         </div>
@@ -58,8 +70,10 @@
 
 <script>
     let customers = {!! json_encode($customers->toArray()) !!};
+    let params = new URLSearchParams(window.location.search).get('filter');
 
-    // console.log(customers);
+    console.log(customers);
+    document.getElementById('selected').value = params != null ? params : 'all';
     const openNav = () => {
         document.getElementById("mySidenav").style.width = window.innerWidth < 1000 ? "500px" : "250px";
     }
@@ -81,6 +95,10 @@
                 location.reload();
             });
         }
+    }
+
+    const onFilter = (value) => {
+        window.location.href = '?filter=' + value.value
     }
 </script>
 
@@ -137,6 +155,14 @@
         font-size: 36px;
         margin-left: 50px;
         float: right;
+    }
+
+    .select-option {
+        padding: 5px; 
+        padding-right: 10px;
+        outline: none; 
+        width: 20%; 
+        border-radius: 50px;
     }
 
     input {
@@ -238,6 +264,11 @@
     }
 
     @media only screen and (max-width: 1000px) {
+        .select-option {
+            width: 100%;
+            font-size: 40px;
+            padding: 20px;
+        }
         img {
             height: 10%;
         }

@@ -6,6 +6,7 @@ use App\Models\Customers;
 use App\Models\DeliveryStatus;
 use App\Models\ProductCourier;
 use App\Models\Products;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -34,9 +35,26 @@ Route::get('accept-product', function () {
     }
 });
 
-Route::get('customers', function () {
+Route::get('customers', function (Request $request) {
+    $customers = Customers::with('delivery')->with('product')->get();
+
+    $newData = collect($customers)->map(function ($data) use ($request) {
+        if ($request['filter'] === 'with') {
+            if (! is_null($data->delivery)) {
+                return $data;
+            }
+        } else {
+            if (is_null($data->delivery)) {
+                return $data;
+            }
+        }
+    })->reject(function ($value) {
+        return $value === null;
+    });
+
     return view('customers\customers', [
-        'customers' => Customers::with('delivery')->with('product')->get(),
+        'customers' => count($request->toArray()) > 0 && $request['filter'] !== 'all' ? $newData : Customers::with('delivery')->with('product')->get(),
+        'filter' => count($request->toArray()) < 1 ? 'false' : $request,
     ]);
 });
 
