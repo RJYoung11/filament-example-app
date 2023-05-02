@@ -3,11 +3,8 @@
 namespace App\Filament\Resources\CustomersResource\Pages;
 
 use App\Filament\Resources\CustomersResource;
-use App\Models\Customers;
 use App\Models\Products;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
-use Filament\Notifications\Notification;
 
 class CreateCustomers extends CreateRecord
 {
@@ -26,7 +23,6 @@ class CreateCustomers extends CreateRecord
 
         $product->save();
 
-        logger($data);
         return $data;
     }
 }

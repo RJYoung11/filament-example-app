@@ -2,17 +2,11 @@
 
 namespace App\Notifications;
 
-use App\Models\Customers;
 use App\Models\User;
-use Filament\Notifications\Events\DatabaseNotificationsSent;
-use Filament\Notifications\Http\Livewire\Notifications;
 use Filament\Notifications\Notification;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class CustomerAdded extends Notification
 {
@@ -26,11 +20,12 @@ class CustomerAdded extends Notification
     public function __construct($customers)
     {
         $getUserAdmin = User::where('isAdmin', 1)->first();
-        if (!empty($customers))
+        if (! empty($customers)) {
             Notification::make()
-                ->title('Customer ' . $customers->firstname . ' ' . $customers->lastname . ' added successfully!')
+                ->title('Customer '.$customers->firstname.' '.$customers->lastname.' added successfully!')
                 ->sendToDatabase($getUserAdmin)
                 ->toBroadcast();
+        }
     }
 
     /**
@@ -41,7 +36,6 @@ class CustomerAdded extends Notification
      */
     public function via($notifiable)
     {
-        logger($notifiable);
         return ['mail'];
     }
 

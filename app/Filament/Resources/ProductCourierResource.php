@@ -36,7 +36,8 @@ class ProductCourierResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('fullname')->required(),
                 Forms\Components\TextInput::make('email')->required(),
-                Forms\Components\TextInput::make('password')->required(),
+                Forms\Components\TextInput::make('password')
+                    ->required(),
                 Forms\Components\Select::make('type')
                     ->options([
                         'customer' => 'Customer',

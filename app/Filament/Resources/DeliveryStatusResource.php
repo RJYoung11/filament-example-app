@@ -26,6 +26,7 @@ class DeliveryStatusResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('customer_id')
+            ->label('Customer')
                     ->searchable()
                     ->options(
                         Customers::select(
@@ -67,9 +68,8 @@ class DeliveryStatusResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->actions([Tables\Actions\EditAction::make()->hidden(fn ($record) => $record->status === 'Package Arrived'),
+                Tables\Actions\DeleteAction::make()->hidden(fn ($record) => $record->status === 'Package Arrived'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

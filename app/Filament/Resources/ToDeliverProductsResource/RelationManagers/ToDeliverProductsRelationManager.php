@@ -44,11 +44,7 @@ class ToDeliverProductsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('product_name')
                     ->label('How many item/s to deliver.')
-                    ->formatStateUsing(function ($record) {
-                        logger(Customers::where('id', $record->customer_id)->first());
-
-                        return Customers::where('id', $record->customer_id)->first()->quantity;
-                    }),
+            ->formatStateUsing(fn ($record) => Customers::where('id', $record->customer_id)->first()->quantity),
             ])
             ->filters([
                 //
