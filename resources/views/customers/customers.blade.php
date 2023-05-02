@@ -42,9 +42,12 @@
                 <div class="column">
                     @if (!is_null($customer))
                         <div class="card" id="{{ $customer->id }}">
-                            <img src="{{ asset('storage/' . $customer->product->file) }}">
+                            <div style="text-align: center">
+                                <img src="{{ asset('storage/' . $customer->product->file) }}">
+                                <h2>{{ $customer->product->product_name }}</h2>
+                            </div>                            
                             <p>Buyer: {{ $customer->firstname . ' ' . $customer->lastname }}</p>
-                            <p>To Pay: {{ $customer->quantity * $customer->product->price }}</p>
+                            <p>To Pay ($): {{ $customer->quantity * $customer->product->price }}</p>
                             <p>Courier:
                                 <b>{{ !is_null($customer->delivery) ? $customer->delivery->courier_name : 'N/A' }}
                                 </b>
@@ -195,7 +198,6 @@
     .card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         padding: 16px;
-        text-align: center;
         background-color: #f1f1f1;
         cursor: pointer;
     }

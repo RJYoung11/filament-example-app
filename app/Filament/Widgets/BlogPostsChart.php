@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\LineChartWidget;
+use App\Models\Products;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BlogPostsChart extends ApexChartWidget
@@ -19,7 +19,7 @@ class BlogPostsChart extends ApexChartWidget
      *
      * @var string|null
      */
-    protected static ?string $heading = 'BlogPostsChart';
+    protected static ?string $heading = 'Product Consumed';
 
     /**
      * Chart options (series, labels, types, size, animations...)
@@ -29,19 +29,28 @@ class BlogPostsChart extends ApexChartWidget
      */
     protected function getOptions(): array
     {
+        $products = Products::all(['product_name', 'total_item', 'item_on_hand']);
+
+        $newValue = collect($products)->map(function ($value) {
+            return [
+                'consume' => $value->total_item - $value->item_on_hand,
+                'product_name' => $value->product_name,
+            ];
+        });
+
         return [
             'chart' => [
-                'type' => 'line',
+                'type' => 'bar',
                 'height' => 300,
             ],
             'series' => [
                 [
-                    'name' => 'BlogPostsChart',
-                    'data' => [7, 4, 6, 10, 14, 7, 5, 9, 10, 15, 13, 18],
+                    'name' => 'Consumed',
+                    'data' => array_column($newValue->toArray(), 'consume'),
                 ],
             ],
             'xaxis' => [
-                'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                'categories' => array_column($newValue->toArray(), 'product_name'),
                 'labels' => [
                     'style' => [
                         'colors' => '#9ca3af',

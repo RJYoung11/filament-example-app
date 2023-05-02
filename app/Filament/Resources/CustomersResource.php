@@ -20,6 +20,8 @@ class CustomersResource extends Resource
 
     protected static ?string $navigationGroup = 'Delivery';
 
+    protected static ?string $navigationLabel = "Customer's Orders";
+
     protected static function getNavigationBadge(): ?string
     {
         return Customers::all()->count();

@@ -3,20 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductsResource\Pages;
-use App\Filament\Resources\ProductsResource\RelationManagers;
-use App\Models\Customers;
 use App\Models\Products;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput\Mask;
-use Filament\Forms\Components\Wizard;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\DB;
 
 class ProductsResource extends Resource
 {
@@ -34,8 +28,8 @@ class ProductsResource extends Resource
                         ->required('eur')
                         ->mask(fn (Mask $mask) => $mask->money(prefix: '$ ', thousandsSeparator: ',', decimalPlaces: 2)),
                     Forms\Components\TextInput::make('item_on_hand')->required(),
-                    Forms\Components\FileUpload::make('file')->required()->preserveFilenames()
-                ])->columns(2)
+                    Forms\Components\FileUpload::make('file')->required()->preserveFilenames(),
+                ])->columns(2),
             ]);
     }
 
@@ -43,18 +37,17 @@ class ProductsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('product_name')->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->money('usd', true)->searchable(),
-            Tables\Columns\TextColumn::make('item_on_hand')
+                Tables\Columns\TextColumn::make('item_on_hand'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

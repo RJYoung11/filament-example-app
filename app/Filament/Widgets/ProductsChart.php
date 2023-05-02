@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\LineChartWidget;
+use App\Models\Products;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class ProductsChart extends ApexChartWidget
@@ -29,6 +29,8 @@ class ProductsChart extends ApexChartWidget
      */
     protected function getOptions(): array
     {
+        $products = Products::all(['product_name', 'total_item', 'item_on_hand']);
+
         return [
             'chart' => [
                 'type' => 'bar',
@@ -36,12 +38,16 @@ class ProductsChart extends ApexChartWidget
             ],
             'series' => [
                 [
-                    'name' => 'ProductsChart',
-                    'data' => [7, 4, 6, 10, 14, 7, 5, 9, 10, 15, 13, 18],
+                    'name' => 'Total Item',
+                    'data' => array_column($products->toArray(), 'total_item'),
+                ],
+                [
+                    'name' => 'Item on hand',
+                    'data' => array_column($products->toArray(), 'item_on_hand'),
                 ],
             ],
             'xaxis' => [
-                'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                'categories' => array_column($products->toArray(), 'product_name'),
                 'labels' => [
                     'style' => [
                         'colors' => '#9ca3af',
@@ -57,7 +63,7 @@ class ProductsChart extends ApexChartWidget
                     ],
                 ],
             ],
-            'colors' => ['#6366f1'],
+            'colors' => ['#6366f1', '#FF5733'],
         ];
     }
 }
