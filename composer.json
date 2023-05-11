@@ -18,7 +18,9 @@
         "leandrocfe/filament-apex-charts": "^0.1.5",
         "pusher/pusher-php-server": "^7.2",
         "ryangjchandler/filament-profile": "^0.2.2",
-        "tightenco/ziggy": "^1.0"
+        "tightenco/ziggy": "^1.0",
+        "webbingbrasil/filament-2fa": "^1.0",
+        "ysfkaya/filament-phone-input": "^1.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

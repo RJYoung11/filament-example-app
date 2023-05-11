@@ -66,7 +66,7 @@ class BlogPostsChart extends ApexChartWidget
                     ],
                 ],
             ],
-            'colors' => ['#6366f1'],
+            'colors' => ['#28B9F1'],
         ];
     }
 }

@@ -63,7 +63,7 @@ class ProductsChart extends ApexChartWidget
                     ],
                 ],
             ],
-            'colors' => ['#6366f1', '#FF5733'],
+            'colors' => ['#28B9F1', '#FFA895'],
         ];
     }
 }

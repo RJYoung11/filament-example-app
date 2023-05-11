@@ -11,6 +11,8 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Livewire\TemporaryUploadedFile;
+use Nuhel\FilamentCropper\Components\Cropper;
 
 class ProductsResource extends Resource
 {
@@ -29,6 +31,16 @@ class ProductsResource extends Resource
                         ->mask(fn (Mask $mask) => $mask->money(prefix: '$ ', thousandsSeparator: ',', decimalPlaces: 2)),
                     Forms\Components\TextInput::make('item_on_hand')->required(),
                     Forms\Components\FileUpload::make('file')->required()->preserveFilenames(),
+                    // Cropper::make('file')
+                    //     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                    //         return (string) str('image_path/'.$file->hashName());
+                    //     })
+                    //     ->enableDownload()
+                    //     ->enableOpen()
+                    //     ->enableImageRotation()
+                    //     ->enableImageFlipping()
+                    //     ->modalSize('xs')
+                    //     ->imageCropAspectRatio('16:9'),
                 ])->columns(2),
             ]);
     }

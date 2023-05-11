@@ -5,12 +5,16 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ListCustomersResource\Pages;
 use App\Filament\Resources\ListCustomersResource\RelationManagers\ListOrdersRelationManager;
 use App\Models\OrdinaryUser;
-use Filament\Forms;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Ysfkaya\FilamentPhoneInput\PhoneInput;
 
 class ListCustomersResource extends Resource
 {
@@ -32,25 +36,27 @@ class ListCustomersResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('fullname')->required(),
-                Forms\Components\TextInput::make('email')->required(),
-                Forms\Components\TextInput::make('password')->required(),
-                Forms\Components\Select::make('type')
+                Card::make([
+                    TextInput::make('fullname')->required(),
+                    PhoneInput::make('phone')->required(),
+                    TextInput::make('email')->required(),
+                    TextInput::make('password')->required(fn ($record) => is_null($record)),
+                    Select::make('type')
                     ->options([
                         'customer' => 'Customer',
                         'courier' => 'Courier',
                     ]),
+                ]),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('fullname'),
-                Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('orders_count')
-                    ->label('Total Orders'),
+            ->columns([TextColumn::make('fullname'),
+                TextColumn::make('email'),
+                TextColumn::make('orders_count')
+                        ->label('Total Orders'),
             ])
             ->filters([
                 //
